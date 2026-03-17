@@ -52,12 +52,11 @@ check_installed <- function(
     return(install_test)
   }
 
-  PATH <- Sys.getenv('PATH')
   cli::cli_warn(c(
     "{toupper(model)} executable not found.",
     "",
     "Checked for {exe_name} in:",
-    "- PATH ({PATH})",
+    "- PATH ({Sys.getenv('PATH')})",
     "- common install locations",
     if (!is.null(path)) "- supplied path {.path {path}}",
     "",
