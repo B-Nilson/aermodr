@@ -2,6 +2,7 @@
 #'
 #' @inheritParams check_installed
 #' @param is_x32 Whether to download the 32-bit version of the model (default: FALSE)
+#' @param remove_zips Whether to remove the downloaded zip files afterwards (default: TRUE)
 #' @param verbose Whether to print a success message if the model is already installed (default: TRUE)
 #' @return The path to the model executable. The model will be installed in `{path}/{toupper(model)}/`.
 #' @export
@@ -9,6 +10,7 @@ install_model <- function(
   path = ".",
   model = c("aermod", "aermap", "aermet")[1],
   is_x32 = FALSE,
+  remove_zips = TRUE,
   verbose = TRUE
 ) {
   stopifnot(
@@ -42,6 +44,10 @@ install_model <- function(
 
   model_url <- get_model_url(model = model, is_x32 = is_x32)
   local_zip <- path |> file.path(paste0(model, ".zip"))
+  if (remove_zips) {
+    on.exit(unlink(local_zip), add = TRUE)
+  }
+
   model_url |>
     utils::download.file(destfile = local_zip, mode = "wb", quiet = !verbose)
   local_files <- local_zip |>

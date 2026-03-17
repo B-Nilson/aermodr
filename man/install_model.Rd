@@ -8,6 +8,7 @@ install_model(
   path = ".",
   model = c("aermod", "aermap", "aermet")[1],
   is_x32 = FALSE,
+  remove_zips = TRUE,
   verbose = TRUE
 )
 }
@@ -17,6 +18,8 @@ install_model(
 \item{model}{Name of the model (default: "aermod", must be one of "aermod", "aermap", or "aermet")}
 
 \item{is_x32}{Whether to download the 32-bit version of the model (default: FALSE)}
+
+\item{remove_zips}{Whether to remove the downloaded zip files afterwards (default: TRUE)}
 
 \item{verbose}{Whether to print a success message if the model is already installed (default: TRUE)}
 }
