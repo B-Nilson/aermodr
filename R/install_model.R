@@ -27,12 +27,13 @@ install_model <- function(
       length(verbose) == 1
   )
 
-  already_installed <- path |>
+  model_dir <- path |> file.path(toupper(model))
+  already_installed <- model_dir |>
     check_installed(model = model, verbose = FALSE) |>
     handyr::on_error(.return = NULL) |>
     suppressWarnings()
-  already_installed <- !is.null(already_installed) && already_installed$found
-  if (already_installed) {
+  is_already_installed <- !is.null(already_installed) && already_installed$found
+  if (is_already_installed) {
     if (verbose) {
       cli::cli_alert_success("{toupper(model)} is already installed")
     }
@@ -44,7 +45,7 @@ install_model <- function(
   model_url |>
     utils::download.file(destfile = local_zip, mode = "wb", quiet = !verbose)
   local_files <- local_zip |>
-    utils::unzip(exdir = path |> file.path(toupper(model)))
+    utils::unzip(exdir = model_dir)
   local_files[endsWith(local_files, paste0(model, ".exe"))] # TODO: what if not windows?
 }
 

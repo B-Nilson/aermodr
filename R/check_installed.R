@@ -73,7 +73,7 @@ check_installed <- function(
 
 check_user_path <- function(path, model, verbose = TRUE) {
   is_exec <- \(p) {
-    !is.null(p) && nzchar(p) && file.exists(p) && file.access(p, mode = 1)
+    !is.null(p) && nzchar(p) && file.exists(p)
   }
   path <- path |>
     normalizePath(winslash = "/", mustWork = FALSE)
