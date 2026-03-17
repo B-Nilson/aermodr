@@ -37,9 +37,7 @@ check_installed <- function(
     )
     install_test <- path |>
       check_user_path(model = model, verbose = verbose)
-    if (!is.null(install_test)) {
-      return(install_test)
-    }
+    return(install_test)
   }
 
   install_test <- exe_name |>
@@ -91,8 +89,7 @@ check_user_path <- function(path, model, verbose = TRUE) {
       source = "user"
     )
   } else {
-    cli::cli_warn("Supplied {model} path does not exist: {.path {path}}")
-    invisible()
+    cli::cli_abort("Supplied {model} path does not exist: {.path {path}}")
   }
 }
 
