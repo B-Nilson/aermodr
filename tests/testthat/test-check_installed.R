@@ -22,7 +22,7 @@ test_that("warning when not installed, no warnings when installed", {
 
 test_that("installed object formatted correctly", {
   models <- c("aermod", "aermap", "aermet")
-  for(model in models) {
+  for (model in models) {
     installed <- check_installed(model = !!model, verbose = FALSE) |>
       expect_named(c("found", "path", "source")) |>
       expect_type("list")

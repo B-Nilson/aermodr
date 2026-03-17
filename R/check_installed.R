@@ -63,9 +63,10 @@ check_installed <- function(
     "To fix:",
     "1. Install {toupper(model)} from the U.S. EPA:",
     "https://www.epa.gov/scram/air-quality-dispersion-modeling-preferred-and-recommended-models#{model}",
+    "(or use {.code aermodr::install_model(path = 'C:/path/to/install/', model = '{model}')})",
     "2. Add the folder containing '{exe_name}' to your system PATH if not already included",
     "or supply it explicitly:",
-    "`check_installed(path = \"C:/path/to/{exe_name}\")`"
+    "{.code check_installed(path = \"C:/path/to/{exe_name}\")}"
   ))
   invisible()
 }

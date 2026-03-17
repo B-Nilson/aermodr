@@ -14,4 +14,7 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: 
-    cli
+    cli,
+    handyr (>= 0.0.0.9000)
+Remotes:  
+    B-Nilson/handyr
