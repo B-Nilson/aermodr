@@ -55,9 +55,8 @@ check_installed <- function(
   }
 
   PATH <- Sys.getenv('PATH')
-  model <- toupper(model)
   cli::cli_warn(c(
-    "{model} executable not found.",
+    "{toupper(model)} executable not found.",
     "",
     "Checked for {exe_name} in:",
     "- PATH ({PATH})",
@@ -65,12 +64,13 @@ check_installed <- function(
     if (!is.null(path)) "- supplied path {.path {path}}",
     "",
     "To fix:",
-    "1. Install {model} from the U.S. EPA:",
-    "https://www.epa.gov/scram/air-quality-dispersion-modeling-preferred-and-recommended-models#aermod",
+    "1. Install {toupper(model)} from the U.S. EPA:",
+    "https://www.epa.gov/scram/air-quality-dispersion-modeling-preferred-and-recommended-models#{model}",
     "2. Add the folder containing '{exe_name}' to your system PATH if not already included",
     "or supply it explicitly:",
     "`check_installed(path = \"C:/path/to/{exe_name}\")`"
   ))
+  invisible()
 }
 
 check_user_path <- function(path, model, verbose = TRUE) {
