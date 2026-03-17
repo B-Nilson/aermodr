@@ -2,18 +2,21 @@
 % Please edit documentation in R/check_installed.R
 \name{check_installed}
 \alias{check_installed}
-\title{Check if AERMOD is installed}
+\title{Check if AERMOD, AERMAP, or AERMET is installed}
 \usage{
 check_installed(
   path = NULL,
-  exe_name = ifelse(.Platform$OS.type == "windows", "aermod.exe", "aermod"),
+  model = c("aermod", "aermap", "aermet")[1],
+  exe_name = paste0(model, ifelse(.Platform$OS.type == "windows", ".exe", "")),
   verbose = TRUE
 )
 }
 \arguments{
-\item{path}{Path to AERMOD executable (optional). If provided and does not end in \code{exe_name}, it will be appended.}
+\item{path}{Path to the model executable (optional). If provided and does not end in \code{exe_name}, it will be appended.}
 
-\item{exe_name}{Name of the AERMOD executable (default: "aermod.exe" on Windows, "aermod" otherwise)}
+\item{model}{Name of the model (default: "aermod", must be one of "aermod", "aermap", or "aermet")}
+
+\item{exe_name}{Name of the model executable (default: "aermod.exe" on Windows, "aermod" otherwise)}
 
 \item{verbose}{Whether to print a success message if AERMOD is found (default: TRUE)}
 }
@@ -21,5 +24,5 @@ check_installed(
 A list containing the found path, the source of the path (either "user", "PATH", or "common_path"), and whether the path was found.
 }
 \description{
-Check if AERMOD is installed
+Check if AERMOD, AERMAP, or AERMET is installed
 }
