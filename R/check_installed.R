@@ -58,11 +58,13 @@ check_installed <- function(
   model <- toupper(model)
   cli::cli_warn(c(
     "{model} executable not found.",
-    "• Checked for {exe_name} in:",
+    "",
+    "Checked for {exe_name} in:",
     "- PATH ({PATH})",
     "- common install locations",
     if (!is.null(path)) "- supplied path {.path {path}}",
-    "• To fix:",
+    "",
+    "To fix:",
     "1. Install {model} from the U.S. EPA:",
     "https://www.epa.gov/scram/air-quality-dispersion-modeling-preferred-and-recommended-models#aermod",
     "2. Add the folder containing '{exe_name}' to your system PATH if not already included",
