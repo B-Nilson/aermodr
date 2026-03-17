@@ -1,8 +1,10 @@
 Package: aermodr
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
+Depends:
+    R (>= 4.1.0)
 Authors@R: 
-    person("Brayden", "Nilson", , "nilson.brayden@gmail.com", role = "ctb")
+    person("Brayden", "Nilson", , "nilson.brayden@gmail.com", role = "cre")
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -11,3 +13,5 @@ RoxygenNote: 7.3.3
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Imports: 
+    cli
