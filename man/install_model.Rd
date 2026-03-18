@@ -9,7 +9,8 @@ install_model(
   model = c("aermod", "aermap", "aermet")[1],
   is_x32 = FALSE,
   remove_zips = TRUE,
-  verbose = TRUE
+  verbose = TRUE,
+  prompt = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ install_model(
 \item{remove_zips}{Whether to remove the downloaded zip files afterwards (default: TRUE)}
 
 \item{verbose}{Whether to print a success message if the model is already installed (default: TRUE)}
+
+\item{prompt}{Whether to prompt the user before downloading/unzipping (default: FALSE)}
 }
 \value{
 The path to the model executable. The model will be installed in \verb{\{path\}/\{toupper(model)\}/}.

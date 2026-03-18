@@ -3,6 +3,7 @@ create_project <- function(
   models = c("aermod", "aermap", "aermet"),
   remove_zips = TRUE,
   verbose = TRUE,
+  prompt = rlang::is_interactive(),
   open = rlang::is_interactive(),
   ...
 ) {
@@ -26,6 +27,7 @@ create_project <- function(
       path = path,
       model = model,
       verbose = verbose,
+      prompt = prompt,
       remove_zips = remove_zips
     )
   }

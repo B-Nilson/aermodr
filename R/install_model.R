@@ -4,6 +4,7 @@
 #' @param is_x32 Whether to download the 32-bit version of the model (default: FALSE)
 #' @param remove_zips Whether to remove the downloaded zip files afterwards (default: TRUE)
 #' @param verbose Whether to print a success message if the model is already installed (default: TRUE)
+#' @param prompt Whether to prompt the user before downloading/unzipping (default: FALSE)
 #' @return The path to the model executable. The model will be installed in `{path}/{toupper(model)}/`.
 #' @export
 install_model <- function(
@@ -11,7 +12,8 @@ install_model <- function(
   model = c("aermod", "aermap", "aermet")[1],
   is_x32 = FALSE,
   remove_zips = TRUE,
-  verbose = TRUE
+  verbose = TRUE,
+  prompt = FALSE
 ) {
   stopifnot(
     "`path` must be NULL or a character vector of length 1" = path |>
@@ -29,7 +31,8 @@ install_model <- function(
       length(verbose) == 1
   )
 
-  model_dir <- path |> file.path(toupper(model))
+  model_dir <- path |>
+    file.path(toupper(model))
   already_installed <- model_dir |>
     check_installed(model = model, verbose = FALSE) |>
     handyr::on_error(.return = NULL) |>
@@ -43,15 +46,14 @@ install_model <- function(
   }
 
   model_url <- get_model_url(model = model, is_x32 = is_x32)
-  local_zip <- path |> file.path(paste0(model, ".zip"))
-  if (remove_zips) {
-    on.exit(unlink(local_zip), add = TRUE)
-  }
+  local_files <- model_url |>
+    get_and_unzip(
+      local_dir = model_dir,
+      verbose = verbose,
+      remove_zips = remove_zips,
+      prompt = prompt
+    )
 
-  model_url |>
-    utils::download.file(destfile = local_zip, mode = "wb", quiet = !verbose)
-  local_files <- local_zip |>
-    utils::unzip(exdir = model_dir)
   local_files[endsWith(local_files, paste0(model, ".exe"))] # TODO: what if not windows?
 }
 
