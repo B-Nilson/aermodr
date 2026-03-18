@@ -3,4 +3,5 @@
 export(check_installed)
 export(create_project)
 export(install_model)
+export(run_aermap)
 export(setup_test_case)
