@@ -6,7 +6,7 @@ test_that("able to run test case", {
   path |> setup_test_case(verbose = FALSE, prompt = FALSE)
 
   result <- path |>
-    file.path("AERMAP") |>
+    paste0("/AERMAP/") |> 
     run_aermap(verbose = FALSE) |> 
     expect_silent()
 
