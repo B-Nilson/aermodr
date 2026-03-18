@@ -10,8 +10,7 @@ create_project(
   remove_zips = TRUE,
   verbose = TRUE,
   prompt = rlang::is_interactive(),
-  open = rlang::is_interactive(),
-  ...
+  open = rlang::is_interactive()
 )
 }
 \arguments{

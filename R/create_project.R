@@ -15,8 +15,7 @@ create_project <- function(
   remove_zips = TRUE,
   verbose = TRUE,
   prompt = rlang::is_interactive(),
-  open = rlang::is_interactive(),
-  ...
+  open = rlang::is_interactive()
 ) {
   # setup project
   ignores <- c(
@@ -36,7 +35,7 @@ create_project <- function(
     "*.sfc",
     "*.zip"
   )
-  usethis::create_project(path, open = FALSE, ...)
+  usethis::create_project(path, open = FALSE)
   usethis::with_project(
     path,
     {
