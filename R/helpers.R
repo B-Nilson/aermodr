@@ -16,7 +16,7 @@ get_and_unzip <- function(
   local_dir |> dir.create(recursive = TRUE, showWarnings = FALSE)
   local_zip <- file.path(local_dir, basename(zip_url))
   if (prompt) {
-    okay_to_download <- menu(
+    okay_to_download <- utils::menu(
       title = "Okay to download and unzip" |>
         paste(zip_url, "?"),
       choices = c("Yes", "No", "Absolutely not")
@@ -28,11 +28,11 @@ get_and_unzip <- function(
     cli::cli_abort("User aborted download of {zip_url}.")
   }
 
-  zip_url |> download.file(destfile = local_zip, mode = "wb", quiet = !verbose)
+  zip_url |> utils::download.file(destfile = local_zip, mode = "wb", quiet = !verbose)
   if (remove_zips) {
     on.exit(unlink(local_zip), add = TRUE)
   }
   local_zip |>
-    unzip(exdir = local_dir) |>
+    utils::unzip(exdir = local_dir) |>
     invisible()
 }
