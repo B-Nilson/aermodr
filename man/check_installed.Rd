@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_installed.R
 \name{check_installed}
 \alias{check_installed}
-\title{Check if AERMOD, AERMAP, or AERMET is installed}
+\title{Check if an AERMOD-related model is installed}
 \usage{
 check_installed(
   path = NULL,
@@ -16,13 +16,13 @@ check_installed(
 
 \item{model}{Name of the model (default: "aermod", must be one of "aermod", "aermap", or "aermet")}
 
-\item{exe_name}{Name of the model executable (default: "aermod.exe" on Windows, "aermod" otherwise)}
+\item{exe_name}{Name of the model executable (default: "{model}.exe" on Windows, "{model}" otherwise)}
 
-\item{verbose}{Whether to print a success message if AERMOD is found (default: TRUE)}
+\item{verbose}{Whether to print a success message if the model is found (default: TRUE)}
 }
 \value{
 A list containing the found path, the source of the path (either "user", "PATH", or "common_path"), and whether the path was found.
 }
 \description{
-Check if AERMOD, AERMAP, or AERMET is installed
+Check if an AERMOD-related model is installed
 }

@@ -22,7 +22,7 @@ install_model(
 
 \item{remove_zips}{Whether to remove the downloaded zip file afterwards (default: TRUE)}
 
-\item{verbose}{Whether to print a success message if AERMOD is found (default: TRUE)}
+\item{verbose}{Whether to print a success message if the model is found (default: TRUE)}
 
 \item{prompt}{Whether to prompt the user before downloading/unzipping (default: TRUE if R is interactive)}
 }
