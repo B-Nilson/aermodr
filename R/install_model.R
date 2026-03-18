@@ -1,10 +1,8 @@
 #' Download and unzip AERMOD, AERMAP, or AERMET model executables
 #'
 #' @inheritParams check_installed
+#' @inheritParams get_and_unzip
 #' @param is_x32 Whether to download the 32-bit version of the model (default: FALSE)
-#' @param remove_zips Whether to remove the downloaded zip files afterwards (default: TRUE)
-#' @param verbose Whether to print a success message if the model is already installed (default: TRUE)
-#' @param prompt Whether to prompt the user before downloading/unzipping (default: FALSE)
 #' @return The path to the model executable. The model will be installed in `{path}/{toupper(model)}/`.
 #' @export
 install_model <- function(

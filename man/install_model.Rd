@@ -20,11 +20,11 @@ install_model(
 
 \item{is_x32}{Whether to download the 32-bit version of the model (default: FALSE)}
 
-\item{remove_zips}{Whether to remove the downloaded zip files afterwards (default: TRUE)}
+\item{remove_zips}{Whether to remove the downloaded zip file afterwards (default: TRUE)}
 
-\item{verbose}{Whether to print a success message if the model is already installed (default: TRUE)}
+\item{verbose}{Whether to print a success message if AERMOD is found (default: TRUE)}
 
-\item{prompt}{Whether to prompt the user before downloading/unzipping (default: FALSE)}
+\item{prompt}{Whether to prompt the user before downloading/unzipping (default: TRUE if R is interactive)}
 }
 \value{
 The path to the model executable. The model will be installed in \verb{\{path\}/\{toupper(model)\}/}.

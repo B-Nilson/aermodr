@@ -1,3 +1,11 @@
+#' Download and unzip a file
+#'
+#' @param zip_url URL of the zip file to download
+#' @param local_dir Local directory to download and unzip the file to
+#' @param remove_zips Whether to remove the downloaded zip file afterwards (default: TRUE)
+#' @param verbose Whether to print a success message after downloading and unzipping (default: TRUE)
+#' @param prompt Whether to prompt the user before downloading/unzipping (default: TRUE if R is interactive)
+#' @return The path to the unzipped directory
 get_and_unzip <- function(
   zip_url,
   local_dir,
