@@ -1,3 +1,4 @@
+# TODO: ensure all digits/formats correct for sprintf entries
 build_receptor_lines <- function(
   receptors,
   receptor_files,

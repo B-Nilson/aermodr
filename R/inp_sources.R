@@ -1,3 +1,4 @@
+# TODO: ensure all digits/formats correct for sprintf entries
 build_source_lines <- function(sources, source_files, expand_paths = TRUE) {
   source_lines <- character(0)
   has_sources <- !is.null(sources) | !is.null(source_files)

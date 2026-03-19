@@ -47,6 +47,8 @@ create_project <- function(
     }
   )
 
+  # TODO: add script templates to R/ for running models
+
   # install models
   for (model in models) {
     install_model(
