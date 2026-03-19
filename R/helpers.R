@@ -36,3 +36,22 @@ get_and_unzip <- function(
     utils::unzip(exdir = local_dir) |>
     invisible()
 }
+
+# TODO: implement throughout the package TODO: move to handyr
+safe_path <- function(path, expand_paths = TRUE, quote = TRUE) {
+  if (is.null(path)) {
+    return(NULL)
+  }
+  if (expand_paths) {
+    path <- path |>
+      normalizePath(winslash = "/", mustWork = FALSE)
+  } else {
+    path <- path |> gsub(pattern = "\\", replacement = "/", fixed = TRUE)
+  }
+  if (quote) {
+    path <- paste0('"', path, '"') # enclose in double quotes in case path contains spaces
+  } else {
+    path <- path |> gsub(pattern = " ", replacement = "\\ ", fixed = TRUE)
+  }
+  return(path)
+}
