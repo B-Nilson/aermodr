@@ -28,7 +28,8 @@ get_and_unzip <- function(
     cli::cli_abort("User aborted download of {zip_url}.")
   }
 
-  zip_url |> utils::download.file(destfile = local_zip, mode = "wb", quiet = !verbose)
+  zip_url |>
+    utils::download.file(destfile = local_zip, mode = "wb", quiet = !verbose)
   if (remove_zips) {
     on.exit(unlink(local_zip), add = TRUE)
   }

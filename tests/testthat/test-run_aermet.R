@@ -5,13 +5,22 @@ test_that("able to run test case", {
   path |> setup_test_case(verbose = FALSE, prompt = FALSE, open = FALSE)
 
   result <- path |>
-    paste0("/AERMET/") |> 
-    run_aermet(verbose = FALSE) |> 
+    paste0("/AERMET/") |>
+    run_aermet(verbose = FALSE) |>
     expect_silent()
 
   result <- result |>
     lapply(\(x) {
-      gsub("PROCESSING DATE/TIME: .*?(PM|AM)", "PROCESSING DATE/TIME: {CENSORED}", x)
+      gsub(
+        "PROCESSING DATE/TIME: .*?(PM|AM)",
+        "PROCESSING DATE/TIME: {CENSORED}",
+        x
+      )
     })
-  {for (res in result) cat(res, "\n")} |> expect_snapshot()
+  {
+    for (res in result) {
+      cat(res, "\n")
+    }
+  } |>
+    expect_snapshot()
 })

@@ -10,8 +10,11 @@ build_receptor_lines <- function(
     receptors |> build_inp_receptors()
   )
   if (!is.null(receptor_files)) {
-    receptor_lines <- receptor_lines |>
-      c("   INCLUDED  %s" |> sprintf(safe_path(receptor_files, expand_paths = expand_paths)))
+    receptor_lines <- c(
+      receptor_lines,
+      "   INCLUDED  %s" |>
+        sprintf(safe_path(receptor_files, expand_paths = expand_paths))
+    )
   }
   receptor_lines |> c("RE FINISHED", "")
 }
@@ -66,7 +69,9 @@ build_inp_receptors <- function(receptors) {
     "arcid",
     "name"
   )
-  receptors[potential_cols[!potential_cols %in% names(receptors)]] <- NA_character_ # ensure all columns are present for case_when test to work
+  receptors[potential_cols[
+    !potential_cols %in% names(receptors)
+  ]] <- NA_character_ # ensure all columns are present for case_when test to work
 
   as.data.frame(receptors) |>
     dplyr::mutate(

@@ -37,7 +37,7 @@ test_that("test case works", {
       receptors = receptors,
       expand_paths = FALSE,
       verbose = FALSE
-    ) |> 
+    ) |>
     expect_silent()
   result |> paste0(collapse = "\n") |> cat() |> expect_snapshot()
 })

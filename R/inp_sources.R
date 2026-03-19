@@ -9,8 +9,11 @@ build_source_lines <- function(sources, source_files, expand_paths = TRUE) {
       c(sources |> build_inp_source_locations())
   }
   if (!is.null(source_files)) {
-    source_lines <- source_lines |>
-      c("   INCLUDED  %s" |> sprintf(safe_path(source_files, expand_paths = expand_paths)))
+    source_lines <- c(
+      source_lines,
+      "   INCLUDED  %s" |>
+        sprintf(safe_path(source_files, expand_paths = expand_paths))
+    )
   }
   if (has_sources) {
     source_lines <- source_lines |> c("SO FINISHED", "")

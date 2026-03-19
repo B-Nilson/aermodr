@@ -5,8 +5,8 @@ test_that("able to run test case", {
   path |> setup_test_case(verbose = FALSE, prompt = FALSE, open = FALSE)
 
   result <- path |>
-    paste0("/AERMAP/") |> 
-    run_aermap(verbose = FALSE) |> 
+    paste0("/AERMAP/") |>
+    run_aermap(verbose = FALSE) |>
     expect_silent()
 
   result |> cat() |> expect_snapshot()
