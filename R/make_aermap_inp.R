@@ -11,8 +11,14 @@ make_aermap_inp <- function(
   sources = NULL,
   source_files = NULL,
   title = "AERMAP Run",
-  output_src_file = "src.dat",
-  output_rec_file = "rec.dat",
+  output_src_file = inp_path |>
+    basename() |>
+    tools::file_path_sans_ext() |>
+    paste0(".src"),
+  output_rec_file = inp_path |>
+    basename() |>
+    tools::file_path_sans_ext() |>
+    paste0(".rec"),
   control_options = list(),
   output_options = list(),
   expand_paths = TRUE,
