@@ -149,7 +149,7 @@ build_datafile_lines <- function(
 
 convert_anchor_for_inp <- function(anchor) {
   anchor <- as.list(anchor)
-  fmt_xy <- \(x) formatC(x, format = "f", digits = 1, drop0trailing = FALSE)
+  fmt_xy <- \(x) formatC(x, format = "f", digits = 0)
 
   "%s %s  %s %s %s %s" |>
     sprintf(

@@ -230,7 +230,7 @@ format_aermap_output_options <- function(
 
 convert_domain_for_inp <- function(domain, type = "xy") {
   domain <- as.list(domain)
-  fmt_xy <- \(x) formatC(x, format = "f", digits = 1, drop0trailing = FALSE)
+  fmt_xy <- \(x) formatC(x, format = "f", digits = 0)
   fmt_ll <- \(x) formatC(x, format = "f", digits = 5, drop0trailing = FALSE)
 
   if (type == "xy") {
