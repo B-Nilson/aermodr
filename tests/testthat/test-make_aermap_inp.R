@@ -39,5 +39,5 @@ test_that("test case works", {
       verbose = FALSE
     ) |> 
     expect_silent()
-  result |> paste0(collapse = "\n\u2028") |> cat() |> expect_snapshot()
+  result |> paste0(collapse = "\n") |> cat() |> expect_snapshot()
 })
