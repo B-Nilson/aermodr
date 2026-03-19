@@ -26,6 +26,12 @@
 #'   with named elements xmin, xmax, ymin, and ymax.
 #' @param NADGRIDS NADGRIDS control option (default: NULL - AERMAP assumes the same directory as the AERMAP .inp file).
 #'   If not NULL, must be a character string of the path to the folder containing NADCON grid shift files (.las and .los).
+#' @param DEBUGOPT DEBUGOPT control option (default: NULL - AERMAP does not print debug information).
+#'   If not NULL, must be a character value equal to "ALL" (equivalent to `c("HILL", "RECEPTOR", "SOURCE")`), or a vector of 1 or more of "HILL", "RECEPTOR", or "SOURCE".
+#'   Separate debug files are created for each of these options to document the determination of the: 
+#'   critical hill height scales, 
+#'   receptor elevations and coordinate conversions, 
+#'   and source elevations and coordinate conversions
 #' @param ... Additional named args (for future-proofing)
 #' @param .expand_paths Should symbolic links etc in the paths be expanded? (default: TRUE)
 #'
