@@ -24,15 +24,11 @@ test_that("test case works", {
     elev = c(10, 15)
   )
 
-  mock_terrain <- tempfile(fileext = "terrain.dem")
-  on.exit(unlink(mock_terrain))
-
   temp <- tempfile()
   on.exit(unlink(temp))
   result <- temp |>
     make_aermap_inp(
       anchor = anchor,
-      terrain_data_files = basename(mock_terrain),
       sources = sources,
       receptors = receptors,
       expand_paths = FALSE,

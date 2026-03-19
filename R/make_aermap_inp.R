@@ -2,7 +2,10 @@
 make_aermap_inp <- function(
   inp_path = "aermap.inp",
   anchor,
-  terrain_data_files,
+  terrain_data_files = inp_path |>
+    basename() |>
+    tools::file_path_sans_ext() |>
+    paste0(".dem"),
   terrain_data_type = c("DEM", "NED")[1],
   terrain_fill_gaps = FALSE,
   receptors = NULL,
