@@ -6,7 +6,9 @@ build_receptor_lines <- function(
 ) {
   receptor_lines <- c(
     "RE STARTING",
-    "   ELEVUNIT  %s" |> sprintf(toupper(receptor_elev_unit)),
+    if ("elev" %in% names(receptors)) {
+      "   ELEVUNIT  %s" |> sprintf(toupper(receptor_elev_unit))
+    },
     receptors |> build_inp_receptors()
   )
   if (!is.null(receptor_files)) {
