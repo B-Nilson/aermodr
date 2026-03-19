@@ -9,5 +9,9 @@ test_that("able to run test case", {
     run_aermet(verbose = FALSE) |> 
     expect_silent()
 
-  {for (res in result) cat(res)} |> expect_snapshot()
+  result <- result |>
+    lapply(\(x) {
+      gsub("PROCESSING DATE/TIME: .*?(PM|AM)", "PROCESSING DATE/TIME: {CENSORED}", x)
+    })
+  {for (res in result) cat(res, "\n")} |> expect_snapshot()
 })

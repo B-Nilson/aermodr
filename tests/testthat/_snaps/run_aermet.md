@@ -1,9 +1,9 @@
 # able to run test case
 
     Code
-      for (res in result) cat(res)
+      for (res in result) cat(res, "\n")
     Output
-       START PROCESSING DATE/TIME: MARCH 17, 2026  22:17:47 PM
+       START PROCESSING DATE/TIME: {CENSORED}
        Stage 1: Extracting upper air data for month/day/year 05/01/1992 LST
        Stage 1: Extracting upper air data for month/day/year 05/02/1992 LST
        Stage 1: Extracting upper air data for month/day/year 05/03/1992 LST
@@ -2312,7 +2312,8 @@
       
        AERMET FINISHED SUCCESSFULLY
       
-       END PROCESSING DATE/TIME: MARCH 17, 2026  22:17:49 PM START PROCESSING DATE/TIME: MARCH 17, 2026  22:17:49 PM
+       END PROCESSING DATE/TIME: {CENSORED} 
+       START PROCESSING DATE/TIME: {CENSORED}
        Stage 2: Extracting upper air data for month/day/year 05/01/1992 LST
        Stage 2: Extracting upper air data for month/day/year 05/02/1992 LST
        Stage 2: Extracting upper air data for month/day/year 05/03/1992 LST
@@ -4237,5 +4238,5 @@
       
        AERMET FINISHED SUCCESSFULLY
       
-       END PROCESSING DATE/TIME: MARCH 17, 2026  22:17:52 PM
+       END PROCESSING DATE/TIME: {CENSORED} 
 
