@@ -35,7 +35,7 @@ make_aermap_inp <- function(
       terrain_data_files = terrain_data_files,
       terrain_data_type = terrain_data_type,
       terrain_fill_gaps = terrain_fill_gaps,
-      control_options = control_options,
+      options = control_options,
       expand_paths = expand_paths,
       test = test
     )
@@ -82,7 +82,7 @@ build_aermap_control_pathway <- function(
   terrain_data_files,
   terrain_data_type = c("DEM", "NED")[1],
   terrain_fill_gaps = FALSE,
-  control_options = aermap_control_options(),
+  options = aermap_control_options(),
   test = FALSE,
   expand_paths = TRUE
 ) {
@@ -92,13 +92,13 @@ build_aermap_control_pathway <- function(
   data_file_line <- terrain_data_files |>
     build_datafile_lines(
       data_type = terrain_data_type, # TODO: allow plural?
-      options = control_options,
+      options = options,
       expand_paths = expand_paths
     )
 
   used_options <- c("CHECKS", "TIFFDEBUGS", "ElevUnits") # used in build_datafile_lines()
-  extra_option_lines <- control_options[
-    !names(control_options) %in% used_options
+  extra_option_lines <- options[
+    !names(options) %in% used_options
   ] |>
     format_aermap_control_options()
   c(
