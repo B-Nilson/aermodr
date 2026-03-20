@@ -32,18 +32,16 @@ build_inp_source_locations <- function(sources, source_lines = character(0)) {
   )
   fmt_num <- \(x) formatC(x, format = "f", digits = 3, drop0trailing = TRUE)
 
-  sources <- as.data.frame(sources)
-  # TODO: de-loop this?
-  for (i in seq_len(nrow(sources))) {
-    s <- sources[i, ]
-    if (is.null(s$elev)) {
-      s$elev <- ""
-    }
-    source_lines <- c(
-      source_lines,
-      "   LOCATION  %s %s %s %s %s" |>
-        sprintf(s$id, s$type, fmt_num(s$x), fmt_num(s$y), fmt_num(s$elev))
-    )
-  }
+  source_lines <- c(
+    source_lines,
+    "   LOCATION  %s %s %s %s %s" |>
+      sprintf(
+        sources$id,
+        sources$type,
+        fmt_num(sources$x),
+        fmt_num(sources$y),
+        fmt_num(sources$elev)
+      )
+  )
   return(source_lines)
 }
