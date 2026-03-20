@@ -36,7 +36,7 @@ make_aermap_inp <- function(
 
   # (CO) control details
   control_lines <- title |>
-    build_control_lines(
+    build_aermap_control_pathway(
       anchor = anchor,
       terrain_data_files = terrain_data_files,
       terrain_data_type = terrain_data_type,
@@ -48,31 +48,26 @@ make_aermap_inp <- function(
 
   # (SO) source details [optional]
   source_lines <- sources |>
-    build_source_lines(
+    build_aermap_source_pathway(
       source_files = source_files,
       expand_paths = expand_paths
     )
 
   # (RE) receptor details
   receptor_lines <- receptors |>
-    build_receptor_lines(
+    build_aermap_receptor_pathway(
       receptor_files = receptor_files,
       receptor_elev_unit = receptor_elev_unit,
       expand_paths = expand_paths
     )
 
   # OUTPUT details
-  output_lines <- c(
-    "OU STARTING",
-    "   RECEPTOR  %s" |>
-      sprintf(safe_path(output_rec_file, expand_paths = expand_paths)),
-    "   SOURCLOC  %s" |>
-      sprintf(safe_path(output_src_file, expand_paths = expand_paths)),
-    control_options |>
-      format_aermap_output_options(expand_paths = expand_paths),
-    "OU FINISHED",
-    ""
-  )
+  output_lines <- output_rec_file |>
+    build_aermap_output_pathway(
+      source_file_path = output_src_file,
+      options = output_options,
+      expand_paths = expand_paths
+    )
 
   # write & log
   lines <- c(control_lines, source_lines, receptor_lines, output_lines)
@@ -87,7 +82,7 @@ make_aermap_inp <- function(
   invisible(lines)
 }
 
-build_control_lines <- function(
+build_aermap_control_pathway <- function(
   title,
   anchor,
   terrain_data_files,
@@ -121,6 +116,28 @@ build_control_lines <- function(
     extra_option_lines,
     "   RUNORNOT  %s" |> sprintf(ifelse(!test, "RUN", "NOT")),
     "CO FINISHED",
+    ""
+  )
+}
+
+build_aermap_output_pathway <- function(
+  receptor_file_path,
+  source_file_path,
+  options = aermap_output_options(.expand_paths = expand_paths),
+  expand_paths = TRUE
+) {
+  path_lines <- "   %s  %s" |>
+    sprintf(
+      c("RECEPTOR", "SOURCLOC"),
+      c(receptor_file_path, source_file_path) |>
+        safe_path(expand_paths = expand_paths)
+    )
+
+  c(
+    "OU STARTING",
+    path_lines,
+    options |> format_aermap_output_options(expand_paths = expand_paths),
+    "OU FINISHED",
     ""
   )
 }

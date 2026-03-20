@@ -1,5 +1,5 @@
 # TODO: ensure all digits/formats correct for sprintf entries
-build_receptor_lines <- function(
+build_aermap_receptor_pathway <- function(
   receptors,
   receptor_files,
   receptor_elev_unit = "METERS",
