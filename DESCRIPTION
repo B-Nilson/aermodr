@@ -21,7 +21,6 @@ Imports:
     renv,
     rlang,
     tidyr,
-    tools,
     usethis
 Remotes: 
     B-Nilson/handyr

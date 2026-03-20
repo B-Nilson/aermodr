@@ -2,10 +2,8 @@
 make_aermap_inp <- function(
   inp_path = "aermap.inp",
   anchor,
-  terrain_data_files = inp_path |>
-    basename() |>
-    tools::file_path_sans_ext() |>
-    paste0(".dem"),
+  terrain_data_files = basename(inp_path) |>
+    sub(pattern = "\\..*$", replacement = ".dem"),
   terrain_data_type = c("DEM", "NED")[1],
   terrain_fill_gaps = FALSE,
   receptors = NULL,
@@ -14,14 +12,10 @@ make_aermap_inp <- function(
   sources = NULL,
   source_files = NULL,
   title = "AERMAP Run",
-  output_src_file = inp_path |>
-    basename() |>
-    tools::file_path_sans_ext() |>
-    paste0(".src"),
-  output_rec_file = inp_path |>
-    basename() |>
-    tools::file_path_sans_ext() |>
-    paste0(".rec"),
+  output_src_file = basename(inp_path) |>
+    sub(pattern = "\\..*$", replacement = ".src"),
+  output_rec_file = basename(inp_path) |>
+    sub(pattern = "\\..*$", replacement = ".rec"),
   control_options = aermap_control_options(.expand_paths = expand_paths),
   output_options = aermap_output_options(.expand_paths = expand_paths),
   expand_paths = TRUE,
