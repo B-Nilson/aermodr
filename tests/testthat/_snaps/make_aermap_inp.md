@@ -6,8 +6,8 @@
       CO STARTING
          TITLEONE  AERMAP Run
          DATATYPE  DEM 
-         DATAFILE  "file2ba45b36540dterrain.dem"  
-         ANCHORXY  0.0 0.0  500000.0 5400000.0 10 0
+         DATAFILE  "aermap.dem"  
+         ANCHORXY  0 0  500000 5400000 10 0
          RUNORNOT  RUN
       CO FINISHED
       
@@ -17,14 +17,13 @@
       SO FINISHED
       
       RE STARTING
-         ELEVUNIT  METERS
          DISCCART  0 0  
          DISCCART  100 100  
          DISCCART  200 200  
       RE FINISHED
       
       OU STARTING
-         RECEPTOR  "rec.dat"
-         SOURCLOC  "src.dat"
+         RECEPTOR  "aermap.rec"
+         SOURCLOC  "aermap.src"
       OU FINISHED
 

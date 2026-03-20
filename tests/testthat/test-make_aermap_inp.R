@@ -24,8 +24,8 @@ test_that("test case works", {
     elev = c(10, 15)
   )
 
-  temp <- tempfile()
-  on.exit(unlink(temp))
+  temp <- file.path(tempdir(), "aermap.inp")
+  on.exit(unlink(dirname(temp), recursive = TRUE))
   result <- temp |>
     make_aermap_inp(
       anchor = anchor,

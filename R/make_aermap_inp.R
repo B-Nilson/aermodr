@@ -22,8 +22,8 @@ make_aermap_inp <- function(
     basename() |>
     tools::file_path_sans_ext() |>
     paste0(".rec"),
-  control_options = aermap_control_options(expand_paths = expand_paths),
-  output_options = aermap_output_options(expand_paths = expand_paths),
+  control_options = aermap_control_options(.expand_paths = expand_paths),
+  output_options = aermap_output_options(.expand_paths = expand_paths),
   expand_paths = TRUE,
   test = FALSE,
   verbose = TRUE
@@ -88,7 +88,7 @@ build_aermap_control_pathway <- function(
   terrain_data_files,
   terrain_data_type = c("DEM", "NED")[1],
   terrain_fill_gaps = FALSE,
-  control_options = aermap_control_options(),
+  control_options = aermap_control_options(.expand_paths = expand_paths),
   test = FALSE,
   expand_paths = TRUE
 ) {
