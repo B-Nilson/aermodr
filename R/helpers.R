@@ -108,14 +108,23 @@ format_options <- function(
   n_spaces_start = 4,
   n_spaces_after_keys = NA
 ) {
-  if (is.na(n_spaces_after_keys)) {
-    key_lengths <- nchar(names(options))
-    n_spaces_after_keys <- (max(key_lengths) - key_lengths) + 2
+  if (length(options) == 0) {
+    return(NULL)
   }
-  names(options) |>
-    sapply(\(key) {
-      "%s%s%s%s" |>
-        sprintf(n_spaces_start, key, n_spaces_after_keys, options[[key]])
-    }) |>
-    unlist()
+  key_lengths <- nchar(names(options))
+  n_spaces_after_keys <- ifelse(
+    is.na(n_spaces_after_keys),
+    (max(key_lengths) - key_lengths) + 2,
+    n_spaces_after_keys
+  )
+
+  start_spaces <- paste(rep(" ", n_spaces_start), collapse = "")
+  after_key_spaces <- n_spaces_after_keys |>
+    sapply(\(x) paste(rep(" ", x), collapse = ""))
+  paste0(
+    start_spaces,
+    names(options),
+    after_key_spaces,
+    unlist(unname(options))
+  )
 }
