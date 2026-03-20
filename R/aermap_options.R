@@ -28,12 +28,11 @@
 #'   If not NULL, must be a character string of the path to the folder containing NADCON grid shift files (.las and .los).
 #' @param DEBUGOPT DEBUGOPT control option (default: NULL - AERMAP does not print debug information).
 #'   If not NULL, must be a character value equal to "ALL" (equivalent to `c("HILL", "RECEPTOR", "SOURCE")`), or a vector of 1 or more of "HILL", "RECEPTOR", or "SOURCE".
-#'   Separate debug files are created for each of these options to document the determination of the: 
-#'   critical hill height scales, 
-#'   receptor elevations and coordinate conversions, 
+#'   Separate debug files are created for each of these options to document the determination of the:
+#'   critical hill height scales,
+#'   receptor elevations and coordinate conversions,
 #'   and source elevations and coordinate conversions
 #' @param ... Additional named args (for future-proofing)
-#' @param .expand_paths Should symbolic links etc in the paths be expanded? (default: TRUE)
 #'
 #' @return A list of set control options for AERMAP.
 #' @references
@@ -68,8 +67,7 @@ aermap_control_options <- function(
   DOMAINLL = c(xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL),
   NADGRIDS = list(NULL, "path/to/NADGrid")[[1]],
   DEBUGOPT = list(NULL, "HILL", "RECEPTOR", "SOURCE", "ALL")[[1]],
-  ...,
-  .expand_paths = TRUE
+  ...
 ) {
   stopifnot(
     is.null(TITLETWO) ||
@@ -116,12 +114,12 @@ aermap_control_options <- function(
     CHECK = CHECKS,
     TIFFDEBUG = TIFFDEBUGS,
     ElevUnits = ElevUnits,
-    TERRHGTS = toupper(TERRHGTS),
+    TERRHGTS = TERRHGTS,
     FLAGPOLE = FLAGPOLE,
     DOMAINXY = DOMAINXY,
     DOMAINLL = DOMAINLL,
-    NADGRIDS = safe_path(NADGRIDS, expand_paths = .expand_paths),
-    DEBUGOPT = toupper(DEBUGOPT),
+    NADGRIDS = NADGRIDS,
+    DEBUGOPT = DEBUGOPT,
     ...
   ) |>
     purrr::compact()
@@ -134,7 +132,6 @@ aermap_control_options <- function(
 #' @param DEBUGREC,DEBUGSRC DEBUGREC/DEBUGSRC control option (default: NULL - AERMAP does not print RECEPTOR/SOURCE debug information).
 #'   If not NULL, must be a character vector with the paths to the receptor/source NAD conversion and domain check file, the DEM-NED assignment file, and the receptor/source elevation file, in that order.
 #' @param ... Additional named args (for future-proofing)
-#' @param .expand_paths Should symbolic links etc in the paths be expanded? (default: TRUE)
 #'
 #' @return A list of set output options for AERMAP.
 #' @export
@@ -156,8 +153,7 @@ aermap_output_options <- function(
       "path/to/SRCelev/file"
     )
   )[[1]],
-  ...,
-  .expand_paths = TRUE
+  ...
 ) {
   stopifnot(
     is.null(DEBUGHIL) ||
@@ -168,88 +164,52 @@ aermap_output_options <- function(
       (is.character(DEBUGSRC) && length(DEBUGSRC) == 3)
   )
   rlang::list2(
-    DEBUGHIL = safe_path(DEBUGHIL, expand_paths = .expand_paths),
-    DEBUGREC = safe_path(DEBUGREC, expand_paths = .expand_paths),
-    DEBUGSRC = safe_path(DEBUGSRC, expand_paths = .expand_paths),
+    DEBUGHIL = DEBUGHIL,
+    DEBUGREC = DEBUGREC,
+    DEBUGSRC = DEBUGSRC,
     ...
   ) |>
     purrr::compact()
 }
 
 format_aermap_control_options <- function(
-  control_options = aermap_control_options(expand_paths = expand_paths),
-  expand_paths = TRUE
+  options = aermap_control_options(),
+  n_spaces_start = 3,
+  n_spaces_after_keys = NA
 ) {
-  names(control_options) <- toupper(names(control_options))
-  if ("DOMAINXY" %in% names(control_options)) {
-    control_options$DOMAINXY <- control_options$DOMAINXY |>
-      convert_domain_for_inp(type = "xy")
+  domain_opts <- c(xy = "DOMAINXY", ll = "DOMAINLL")
+  if (any(domain_opts %in% names(options))) {
+    options[domain_opts] <- names(options[domain_opts]) |>
+      lapply(\(type) {
+        options[[domain_opts[[type]]]] |> format_domain_option(type = type)
+      })
   }
-  if ("DOMAINLL" %in% names(control_options)) {
-    control_options$DOMAINLL <- control_options$DOMAINLL |>
-      convert_domain_for_inp(type = "ll")
+  if ("DEBUGOPT" %in% names(options)) {
+    options$DEBUGOPT <- options$DEBUGOPT |> format_list_option()
   }
-  if ("DEBUGOPT" %in% names(control_options)) {
-    control_options$DEBUGOPT <- control_options$DEBUGOPT |>
-      toupper() |>
-      unique() |>
-      paste(collapse = " ")
-  }
-  names(control_options) |>
-    sapply(\(key) {
-      "   %s  %s" |> sprintf(key, control_options[[key]])
-    }) |>
-    unlist()
+  options |>
+    format_options(
+      n_spaces_start = n_spaces_start,
+      n_spaces_after_keys = n_spaces_after_keys
+    )
 }
 
 format_aermap_output_options <- function(
-  output_options = aermap_output_options(.expand_paths = expand_paths),
-  expand_paths = TRUE
+  options = aermap_output_options(),
+  expand_paths = TRUE,
+  n_spaces_start = 3,
+  n_spaces_after_keys = NA
 ) {
-  names(output_options) <- toupper(names(output_options))
-  if ("DEBUGHIL" %in% names(output_options)) {
-    output_options$DEBUGHIL <- output_options$DEBUGHIL |>
-      safe_path(expand_paths = expand_paths)
+  names(options) <- toupper(names(options))
+  path_opts <- c("DEBUGHIL", "DEBUGREC", "DEBUGSRC")
+  if (any(path_opts %in% names(options))) {
+    options[path_options] <- options[path_options] |>
+      lapply(format_path_options, expand_paths = expand_paths)
   }
-  if ("DEBUGREC" %in% names(output_options)) {
-    output_options$DEBUGREC <- output_options$DEBUGREC |>
-      safe_path(expand_paths = expand_paths) |>
-      paste(collapse = " ")
-  }
-  if ("DEBUGSRC" %in% names(output_options)) {
-    output_options$DEBUGSRC <- output_options$DEBUGSRC |>
-      safe_path(expand_paths = expand_paths) |>
-      paste(collapse = " ")
-  }
-  names(output_options) |>
-    sapply(\(key) {
-      "   %s  %s" |> sprintf(key, output_options[[key]])
-    }) |>
-    unlist()
-}
 
-convert_domain_for_inp <- function(domain, type = "xy") {
-  domain <- as.list(domain)
-  fmt_xy <- \(x) formatC(x, format = "f", digits = 0)
-  fmt_ll <- \(x) formatC(x, format = "f", digits = 5, drop0trailing = FALSE)
-
-  if (type == "xy") {
-    "%s %s %s  %s %s %s" |>
-      sprintf(
-        fmt_xy(domain$xmin),
-        fmt_xy(domain$ymin),
-        domain$zone_min,
-        fmt_xy(domain$xmax),
-        fmt_xy(domain$ymax),
-        domain$zone_max
-      )
-  } else if (type == "ll") {
-    "%s %s  %s %s" |>
-      sprintf(
-        fmt_ll(domain$xmin),
-        fmt_ll(domain$ymin),
-        fmt_ll(domain$xmax),
-        fmt_ll(domain$ymax)
-      )
-  }
+  options |>
+    format_options(
+      n_spaces_start = n_spaces_start,
+      n_spaces_after_keys = n_spaces_after_keys
+    )
 }

@@ -16,8 +16,8 @@ make_aermap_inp <- function(
     sub(pattern = "\\..*$", replacement = ".src"),
   output_rec_file = basename(inp_path) |>
     sub(pattern = "\\..*$", replacement = ".rec"),
-  control_options = aermap_control_options(.expand_paths = expand_paths),
-  output_options = aermap_output_options(.expand_paths = expand_paths),
+  control_options = aermap_control_options(),
+  output_options = aermap_output_options(),
   expand_paths = TRUE,
   test = FALSE,
   verbose = TRUE
@@ -82,7 +82,7 @@ build_aermap_control_pathway <- function(
   terrain_data_files,
   terrain_data_type = c("DEM", "NED")[1],
   terrain_fill_gaps = FALSE,
-  control_options = aermap_control_options(.expand_paths = expand_paths),
+  control_options = aermap_control_options(),
   test = FALSE,
   expand_paths = TRUE
 ) {
@@ -91,16 +91,16 @@ build_aermap_control_pathway <- function(
 
   data_file_line <- terrain_data_files |>
     build_datafile_lines(
-      terrain_data_type = terrain_data_type, # TODO: allow plural?
-      control_options = control_options,
+      data_type = terrain_data_type, # TODO: allow plural?
+      options = control_options,
       expand_paths = expand_paths
     )
 
-  used_options <- c("CHECKS", "TIFFDEBUGS", "ElevUnits")
+  used_options <- c("CHECKS", "TIFFDEBUGS", "ElevUnits") # used in build_datafile_lines()
   extra_option_lines <- control_options[
     !names(control_options) %in% used_options
   ] |>
-    format_aermap_control_options(expand_paths = expand_paths)
+    format_aermap_control_options()
   c(
     "CO STARTING",
     "   TITLEONE  %s" |> sprintf(title),
@@ -117,51 +117,49 @@ build_aermap_control_pathway <- function(
 build_aermap_output_pathway <- function(
   receptor_file_path,
   source_file_path,
-  options = aermap_output_options(.expand_paths = expand_paths),
+  options = aermap_output_options(),
   expand_paths = TRUE
 ) {
-  path_lines <- "   %s  %s" |>
-    sprintf(
-      c("RECEPTOR", "SOURCLOC"),
-      c(receptor_file_path, source_file_path) |>
-        safe_path(expand_paths = expand_paths)
-    )
+  # prepend required receptor/source options
+  options <- list(RECEPTOR = receptor_file_path, SOURCLOC = source_file_path) |>
+    lapply(format_path_options, expand_paths = expand_paths) |>
+    c(options)
 
   c(
     "OU STARTING",
-    path_lines,
-    options |> format_aermap_output_options(expand_paths = expand_paths),
+    options |> format_aermap_output_options(),
     "OU FINISHED",
     ""
   )
 }
 
 build_datafile_lines <- function(
-  terrain_data_files,
-  terrain_data_type,
-  control_options,
+  data_files,
+  data_type,
+  options,
   expand_paths = TRUE
 ) {
-  if (is.null(control_options$TIFFDEBUGS)) {
-    control_options$TIFFDEBUGS <- NA_character_
+  if (is.null(options$TIFFDEBUGS)) {
+    options$TIFFDEBUGS <- NA_character_
   }
-  if (is.null(control_options$CHECKS)) {
-    control_options$CHECKS <- FALSE
+  if (is.null(options$CHECKS)) {
+    options$CHECKS <- FALSE
   }
   check_or_tiffdebug <- dplyr::case_when(
-    rep(terrain_data_type, length(terrain_data_files)) == "DEM" &
-      control_options$CHECKS ~ "CHECK",
-    rep(terrain_data_type, length(terrain_data_files)) ==
-      "NED" ~ control_options$TIFFDEBUGS,
+    rep(data_type, length(data_files)) == "DEM" &
+      options$CHECKS ~ "CHECK",
+    rep(data_type, length(data_files)) == "NED" ~ options$TIFFDEBUGS,
     .default = ""
   ) |>
     dplyr::replace_values(NA ~ "")
   ned_elev_units <-
-    (terrain_data_type == "NED" & !is.na(control_options$TIFFDEBUGS)) |>
-    ifelse(control_options$ElevUnits, "")
+    (data_type == "NED" & !is.na(options$TIFFDEBUGS)) |>
+    ifelse(options$ElevUnits, "")
+
   "   DATAFILE  %s %s %s" |>
     sprintf(
-      safe_path(terrain_data_files, expand_paths = expand_paths),
+      data_files |>
+        format_path_options(expand_paths = expand_paths, collapse = FALSE),
       check_or_tiffdebug,
       ned_elev_units
     )

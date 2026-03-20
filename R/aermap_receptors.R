@@ -5,21 +5,23 @@ build_aermap_receptor_pathway <- function(
   receptor_elev_unit = "METERS",
   expand_paths = TRUE
 ) {
+  elevunit_line <- "   ELEVUNIT  %s" |>
+    sprintf(toupper(receptor_elev_unit))
+  file_lines <- NULL
+  if (!is.null(receptor_files)) {
+    files_fmtted <- receptor_files |>
+      format_path_options(expand_paths = expand_paths, collapse = FALSE)
+    file_lines <- c("   INCLUDED  %s" |> sprintf(files_fmtted))
+  }
+
   receptor_lines <- c(
     "RE STARTING",
-    if ("elev" %in% names(receptors)) {
-      "   ELEVUNIT  %s" |> sprintf(toupper(receptor_elev_unit))
-    },
-    receptors |> build_inp_receptors()
+    if ("elev" %in% names(receptors)) elevunit_line,
+    receptors |> build_inp_receptors(),
+    file_lines,
+    "RE FINISHED",
+    ""
   )
-  if (!is.null(receptor_files)) {
-    receptor_lines <- c(
-      receptor_lines,
-      "   INCLUDED  %s" |>
-        sprintf(safe_path(receptor_files, expand_paths = expand_paths))
-    )
-  }
-  receptor_lines |> c("RE FINISHED", "")
 }
 
 build_inp_receptors <- function(receptors) {

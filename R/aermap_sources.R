@@ -1,25 +1,26 @@
 # TODO: ensure all digits/formats correct for sprintf entries
-build_aermap_source_pathway <- function(sources, source_files, expand_paths = TRUE) {
-  source_lines <- character(0)
+build_aermap_source_pathway <- function(
+  sources = NULL,
+  source_files = NULL,
+  expand_paths = TRUE
+) {
   has_sources <- !is.null(sources) | !is.null(source_files)
-  if (has_sources) {
-    source_lines <- c("SO STARTING")
+  if (!has_sources) {
+    return(NULL)
   }
+
+  source_lines <- c("SO STARTING")
   if (!is.null(sources)) {
     source_lines <- source_lines |>
       c(sources |> build_inp_source_locations())
   }
   if (!is.null(source_files)) {
-    source_lines <- c(
-      source_lines,
-      "   INCLUDED  %s" |>
-        sprintf(safe_path(source_files, expand_paths = expand_paths))
-    )
+    files_fmtted <- source_files |>
+      format_path_options(expand_paths = expand_paths, collapse = FALSE)
+    source_lines <- source_lines |>
+      c("   INCLUDED  %s" |> sprintf(files_fmtted))
   }
-  if (has_sources) {
-    source_lines <- source_lines |> c("SO FINISHED", "")
-  }
-  return(source_lines)
+  source_lines |> c("SO FINISHED", "")
 }
 
 build_inp_source_locations <- function(sources, source_lines = character(0)) {

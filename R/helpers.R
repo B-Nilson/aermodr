@@ -38,8 +38,7 @@ get_and_unzip <- function(
     invisible()
 }
 
-# TODO: implement throughout the package TODO: move to handyr
-safe_path <- function(path, expand_paths = TRUE, quote = TRUE) {
+format_path_options <- function(path, expand_paths = TRUE, quote = TRUE, collapse = TRUE) {
   if (is.null(path)) {
     return(NULL)
   }
@@ -54,5 +53,68 @@ safe_path <- function(path, expand_paths = TRUE, quote = TRUE) {
   } else {
     path <- path |> gsub(pattern = " ", replacement = "\\ ", fixed = TRUE)
   }
+
+  if (collapse) {
+    path <- path |> paste(collapse = " ")
+  }
   return(path)
+}
+
+format_flag_options <- function(flag_options) {
+  flag_options |>
+    lapply(\(opt) {
+      if (opt) {
+        return("")
+      } else {
+        return(NULL)
+      }
+    })
+}
+
+format_list_option <- function(list_option) {
+  list_option |>
+    unique() |>
+    paste(collapse = " ")
+}
+
+format_domain_option <- function(domain, type = "xy") {
+  domain <- as.list(domain)
+  fmt_xy <- \(x) formatC(x, format = "f", digits = 0)
+  fmt_ll <- \(x) formatC(x, format = "f", digits = 5, drop0trailing = FALSE)
+
+  if (type == "xy") {
+    "%s %s %s  %s %s %s" |>
+      sprintf(
+        fmt_xy(domain$xmin),
+        fmt_xy(domain$ymin),
+        domain$zone_min,
+        fmt_xy(domain$xmax),
+        fmt_xy(domain$ymax),
+        domain$zone_max
+      )
+  } else if (type == "ll") {
+    "%s %s  %s %s" |>
+      sprintf(
+        fmt_ll(domain$xmin),
+        fmt_ll(domain$ymin),
+        fmt_ll(domain$xmax),
+        fmt_ll(domain$ymax)
+      )
+  }
+}
+
+format_options <- function(
+  options,
+  n_spaces_start = 4,
+  n_spaces_after_keys = NA
+) {
+  if (is.na(n_spaces_after_keys)) {
+    key_lengths <- nchar(names(options))
+    n_spaces_after_keys <- (max(key_lengths) - key_lengths) + 2
+  }
+  names(options) |>
+    sapply(\(key) {
+      "%s%s%s%s" |> sprintf(n_spaces, key, n_spaces_after_keys, options[[key]])
+    }) |>
+    unlist()
 }
