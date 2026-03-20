@@ -114,7 +114,8 @@ format_options <- function(
   }
   names(options) |>
     sapply(\(key) {
-      "%s%s%s%s" |> sprintf(n_spaces, key, n_spaces_after_keys, options[[key]])
+      "%s%s%s%s" |>
+        sprintf(n_spaces_start, key, n_spaces_after_keys, options[[key]])
     }) |>
     unlist()
 }
