@@ -38,7 +38,11 @@ get_and_unzip <- function(
     invisible()
 }
 
-format_path_options <- function(path, expand_paths = TRUE, quote = TRUE, collapse = TRUE) {
+format_path_options <- function(
+  path,
+  expand_paths = TRUE,
+  collapse = TRUE
+) {
   if (is.null(path)) {
     return(NULL)
   }
@@ -48,11 +52,13 @@ format_path_options <- function(path, expand_paths = TRUE, quote = TRUE, collaps
   } else {
     path <- path |> gsub(pattern = "\\", replacement = "/", fixed = TRUE)
   }
-  if (quote) {
-    path <- paste0('"', path, '"') # enclose in double quotes in case path contains spaces
-  } else {
-    path <- path |> gsub(pattern = " ", replacement = "\\ ", fixed = TRUE)
-  }
+
+  # Wrap in quotes if path contains spaces
+  path <- ifelse(
+    grepl(" ", path),
+    paste0('"', path, '"'),
+    path
+  )
 
   if (collapse) {
     path <- path |> paste(collapse = " ")
@@ -71,6 +77,7 @@ format_flag_options <- function(flag_options) {
     })
 }
 
+# TODO: Handle character limits - split into multiple lines as needed
 format_list_option <- function(list_option) {
   list_option |>
     unique() |>
@@ -103,6 +110,49 @@ format_domain_option <- function(domain, type = "xy") {
   }
 }
 
+format_xdates_option <- function(XDATES) {
+  date_format <- "%Y/%m/%d"
+  paste(
+    format(XDATES[[1]], date_format),
+    "TO",
+    format(XDATES[[2]], date_format)
+  )
+}
+
+format_data_option <- function(
+  path,
+  format = "",
+  is_asos = FALSE,
+  land_water = ""
+) {
+  if (land_water != "") {
+    return(paste(path, land_water))
+  }
+  asos <- if (is_asos && format != "") "ASOS" else NULL
+  paste(path, format, asos)
+}
+
+# TODO: fix formatting of lat/lng to be like "38.4N 81.9W"
+format_location_option <- function(location) {
+  if (is.null(location)) {
+    return(NULL)
+  }
+  with(
+    location,
+    paste(
+      site_id,
+      lat,
+      lng,
+      tz_offset,
+      if (!is.null(location$elev)) ifelse(!is.na(tz_offset), elev, "")
+    )
+  )
+}
+
+format_range_option <- function(RANGE) {
+  with(RANGE, paste(name, min, symbol, max, missing_indicator))
+}
+
 format_options <- function(
   options,
   n_spaces_start = 4,
@@ -110,6 +160,17 @@ format_options <- function(
 ) {
   if (length(options) == 0) {
     return(NULL)
+  }
+
+  if ("XDATES" %in% names(options)) {
+    options$XDATES <- options$XDATES |> format_xdates_option()
+  }
+  if ("RANGE" %in% names(options)) {
+    options$RANGE <- options$RANGE |> format_range_option()
+  }
+
+  if (length(n_spaces_after_keys) == 1) {
+    n_spaces_after_keys <- rep(n_spaces_after_keys, length(options))
   }
   key_lengths <- nchar(names(options))
   n_spaces_after_keys <- ifelse(
@@ -120,11 +181,16 @@ format_options <- function(
 
   start_spaces <- paste(rep(" ", n_spaces_start), collapse = "")
   after_key_spaces <- n_spaces_after_keys |>
-    sapply(\(x) paste(rep(" ", x), collapse = ""))
-  paste0(
-    start_spaces,
-    names(options),
-    after_key_spaces,
-    unlist(unname(options))
-  )
+    lapply(\(x) paste(rep(" ", x), collapse = "")) |>
+    stats::setNames(names(options))
+  names(options) |>
+    lapply(\(key) {
+      paste0(
+        start_spaces,
+        key,
+        after_key_spaces[[key]],
+        options[[key]]
+      )
+    }) |>
+    unlist()
 }
