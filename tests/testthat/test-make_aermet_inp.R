@@ -60,7 +60,13 @@ test_that("test case works", {
       XDATES = c(as.Date("2020-01-01"), as.Date("2022-12-31")),
       QAOUT = "surface.qa",
       AUDIT = "ALL",
-      RANGE = data.frame(name = "TEMP", min = -30, max = 50, symbol = "<=", missing_indicator = -999),
+      RANGE = data.frame(
+        name = "TEMP",
+        min = -30,
+        max = 50,
+        symbol = "<=",
+        missing_indicator = -999
+      ),
       NO_MISSING = "TEMP",
       ASOS1MIN = "asos1min.csv"
     ),
@@ -69,7 +75,13 @@ test_that("test case works", {
       XDATES = c(as.Date("2020-01-01"), as.Date("2022-12-31")),
       QAOUT = "surface.qa",
       AUDIT = "ALL",
-      RANGE = data.frame(name = "TEMP", min = -30, max = 50, symbol = "<=", missing_indicator = -999),
+      RANGE = data.frame(
+        name = "TEMP",
+        min = -30,
+        max = 50,
+        symbol = "<=",
+        missing_indicator = -999
+      ),
       NO_MISSING = "TEMP",
       MODIFY = "ALL"
     ),
