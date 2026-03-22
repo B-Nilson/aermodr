@@ -40,7 +40,6 @@ create_project <- function(
     path,
     {
       renv::activate()
-      renv::snapshot(prompt = FALSE)
       usethis::use_air()
       usethis::use_git_ignore(ignores = ignores)
       usethis::use_git()
