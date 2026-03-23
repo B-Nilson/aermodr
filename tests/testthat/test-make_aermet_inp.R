@@ -86,7 +86,7 @@ test_that("test case works", {
       MODIFY = "ALL"
     ),
     expand_paths = FALSE,
-    verbose = TRUE # TODO: set to FALSE
+    verbose = FALSE
   ) |>
     expect_silent()
   result |> paste0(collapse = "\n") |> cat() |> expect_snapshot()

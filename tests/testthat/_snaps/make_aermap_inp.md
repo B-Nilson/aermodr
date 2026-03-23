@@ -6,8 +6,9 @@
       CO STARTING
          TITLEONE  AERMAP Run
          DATATYPE  DEM 
-         DATAFILE  "aermap.dem"  
+         DATAFILE  aermap.dem  
          ANCHORXY  0 0  500000 5400000 10 0
+         NADGRIDS  NAD_gridshifts/
          RUNORNOT  RUN
       CO FINISHED
       
@@ -23,7 +24,7 @@
       RE FINISHED
       
       OU STARTING
-         RECEPTOR  "aermap.rec"
-         SOURCLOC  "aermap.src"
+         RECEPTOR  aermap.rec
+         SOURCLOC  aermap.src
       OU FINISHED
 

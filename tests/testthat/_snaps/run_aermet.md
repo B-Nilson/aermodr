@@ -1,7 +1,9 @@
 # able to run test case
 
     Code
-      for (res in result) cat(res, "\n")
+      for (res in result) {
+        cat(res, "\n")
+      }
     Output
        START PROCESSING DATE/TIME: {CENSORED}
        Stage 1: Extracting upper air data for month/day/year 05/01/1992 LST
