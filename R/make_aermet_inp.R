@@ -5,25 +5,27 @@ make_aermet_inp <- function(
   onsite_prog_station, # TODO: required? when not allowed?
   wind_sectors = data.frame(start = NULL, end = NULL), # SECTOR(2)
   landuse_change_frequency = data.frame(
-    frequency = list(NULL, c("ANNUAL", "SEASONAL", "MONTHLY"))[[1]],
-    n_sectors = list(NULL, 1:12)[[1]],
-    years = list(NULL, c("2020 2021 2022", "2023", "2024 2025"))[[1]]
+    n_sectors = list(NULL, 1:12)[[1]]
   ), # FREQ_SECT(2)
   site_characteristics = data.frame(
-    landuse_change_frequency_id = NULL,
-    landuse_change_sector_id = NULL, # TODO: clarify
+    frequency = list(NULL, c("ANNUAL", "SEASONAL", "MONTHLY"))[[1]],
+    years = list(NULL, c("2020 2021 2022", "2023", "2024 2025"))[[1]],
+    sector_start = NULL,
+    sector_end = NULL,
+    frequency_id = NULL,
+    sector_id = NULL,
     albedo = NULL,
     bowen_ratio = NULL,
     surface_roughness = NULL
   ), # SITE_CHAR(2)
   messages_path = "aermet_messages.txt",
   output_path = basename(inp_path) |>
-    sub(pattern = "\\..*$", replacement = ".out"),
+    sub(pattern = "\\..*$", replacement = ".sfc"),
   profile_path = basename(inp_path) |>
     sub(pattern = "\\..*$", replacement = ".pfl"),
   instrument_heights,
   surface_path = basename(inp_path) |>
-    sub(pattern = "\\..*$", replacement = ".sfc"),
+    sub(pattern = "\\..*$", replacement = "_surface.txt"),
   surface_data_format = c(
     "EXTRACT",
     "CD144",
@@ -33,10 +35,10 @@ make_aermet_inp <- function(
     "ISHD"
   )[1],
   upperair_path = basename(inp_path) |>
-    sub(pattern = "\\..*$", replacement = ".upr"),
+    sub(pattern = "\\..*$", replacement = "_upperair.txt"),
   upperair_data_format = c("EXTRACT", "IGRA", "FSL", "6201FB", "6201VB")[1],
   onsite_prog_path = basename(inp_path) |>
-    sub(pattern = "\\..*$", replacement = ".ons"),
+    sub(pattern = "\\..*$", replacement = "_onsite_prog.txt"),
   onsite_formats = NULL, # See Table B-3 and B-4
   job_options = aermet_job_options(),
   surface_options = aermet_surface_options(),
@@ -83,25 +85,54 @@ make_aermet_inp <- function(
     c(onsite_prog_options) |>
     format_aermap_onsite_and_prog_options()
 
+  sectors <- site_characteristics |>
+    dplyr::filter(!duplicated(sector_id)) |>
+    dplyr::select(start = sector_start, end = sector_end)
+
+  if (!"years" %in% names(site_characteristics)) {
+    site_characteristics$years <- ""
+  }
+  landuse_change_frequency <- site_characteristics |>
+    dplyr::count(frequency, frequency_id, years) |>
+    dplyr::distinct(frequency, n, years)
+  freq_sector_range <- list(ANNUAL = "1", SEASONAL = "1-4", MONTHLY = "1-12")[[
+    landuse_change_frequency$frequency[1]
+  ]]
+
+  fmt_int3 <- \(x) formatC(x, format = "d", digits = 0, width = 3)
+  fmt_num <- \(x) formatC(x, format = "f", digits = 2, drop0trailing = FALSE)
   metprep_options_fmtted <- list(
+    OUTPUT = output_path |> format_path_options(expand_paths = expand_paths),
+    PROFILE = profile_path |> format_path_options(expand_paths = expand_paths),
+    "**   " = "--|instrument|height (m)|--",
     NWS_HGT = "%s %s" |>
-      sprintf(names(instrument_heights), instrument_heights),
+      sprintf(
+        names(instrument_heights) |>
+          formatC(width = max(nchar(names(instrument_heights)))),
+        instrument_heights
+      ),
     # TODO: handle FREQ_SECT2 SECTOR2 and SITE_CHAR2
-    SECTOR = with(wind_sectors, paste(seq_along(start), start, end)),
+    "**" = "Define Sectors: Time (t = %s), Space (s = 1-%s)" |>
+      sprintf(freq_sector_range, nrow(sectors)),
     FREQ_SECT = landuse_change_frequency |>
-      with(paste(frequency, n_sectors, years)),
+      with(paste(frequency, n, years)),
+    "** " = "        --|s|sta|end|-- (degrees)",
+    SECTOR = with(
+      sectors,
+      paste(seq_along(start), fmt_int3(start), fmt_int3(end))
+    ),
+    "**  " = "       --|t|s|albd|bowr|srfr|--",
     SITE_CHAR = with(
-      site_characteristics,
+      site_characteristics |> dplyr::arrange(frequency_id, sector_id),
       paste(
-        landuse_change_frequency_id,
-        landuse_change_sector_id,
-        albedo,
-        bowen_ratio,
-        surface_roughness
+        frequency_id,
+        sector_id,
+        fmt_num(albedo),
+        fmt_num(bowen_ratio),
+        fmt_num(surface_roughness)
       )
     ),
-    OUTPUT = output_path |> format_path_options(expand_paths = expand_paths),
-    PROFILE = profile_path |> format_path_options(expand_paths = expand_paths)
+    "  " = ""
   ) |>
     c(metprep_options) |>
     format_aermet_metprep_options(expand_paths = expand_paths)

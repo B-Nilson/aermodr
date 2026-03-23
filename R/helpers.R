@@ -179,20 +179,29 @@ format_options <- function(
     n_spaces_after_keys <- rep(n_spaces_after_keys, length(options))
   }
   key_lengths <- nchar(names(options))
-  n_spaces_after_keys <- ifelse(
-    is.na(n_spaces_after_keys),
-    (max(key_lengths) - key_lengths) + 2,
-    n_spaces_after_keys
+  n_spaces_after_keys <- dplyr::case_when(
+    names(options) |> startsWith("**") ~ 1,
+    is.na(n_spaces_after_keys) ~ (max(key_lengths) - key_lengths) + 2,
+    .default = n_spaces_after_keys
   )
 
-  start_spaces <- paste(rep(" ", n_spaces_start), collapse = "")
+  start_spaces <- names(options) |>
+    lapply(\(opt_name) {
+      ifelse(
+        opt_name |> startsWith("**"),
+        "",
+        paste(rep(" ", n_spaces_start), collapse = "")
+      )
+    }) |>
+    stats::setNames(names(options))
+
   after_key_spaces <- n_spaces_after_keys |>
     lapply(\(x) paste(rep(" ", x), collapse = "")) |>
     stats::setNames(names(options))
   names(options) |>
     lapply(\(key) {
       paste0(
-        start_spaces,
+        start_spaces[[key]],
         key,
         after_key_spaces[[key]],
         options[[key]]
