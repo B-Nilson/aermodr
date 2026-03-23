@@ -11,6 +11,7 @@
 install_model <- function(
   path = ".",
   model = c("aermod", "aermap", "aermet")[1],
+  timeout = 60 * 3,
   is_x32 = FALSE,
   remove_zips = TRUE,
   verbose = TRUE,
@@ -52,7 +53,8 @@ install_model <- function(
       local_dir = model_dir,
       verbose = verbose,
       remove_zips = remove_zips,
-      prompt = prompt
+      prompt = prompt,
+      timeout = timeout
     )
   
   if (model == "aermap") {

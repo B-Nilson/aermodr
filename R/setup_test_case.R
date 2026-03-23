@@ -5,14 +5,15 @@
 #' US EPA Support Center for Regulatory Atmospheric Modeling (SCRAM) website.
 #'
 #' @inheritParams create_project
+#' @inheritParams get_and_unzip
 #'
-#' @return The path to the test case directory, with the zip file removed if
-#'   remove_zips is TRUE.
+#' @return The path to the test case directory.
 #'
 #' @export
 setup_test_case <- function(
   path,
   remove_zips = TRUE,
+  timeout = 60 * 3,
   verbose = TRUE,
   prompt = rlang::is_interactive(),
   open = rlang::is_interactive()
@@ -31,7 +32,8 @@ setup_test_case <- function(
       local_dir = path,
       remove_zips = remove_zips,
       verbose = verbose,
-      prompt = prompt
+      prompt = prompt,
+      timeout = timeout
     )
   local_files_new <- local_files |>
     sub(pattern = file.path(path, "SampleRun"), replacement = path)
