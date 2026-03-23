@@ -15,7 +15,7 @@ aermap_control_options(
   DOMAINXY = c(xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL, zone_min = NULL,
     zone_max = NULL),
   DOMAINLL = c(xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL),
-  NADGRIDS = list(NULL, "path/to/NADGrid")[[1]],
+  NADGRIDS = "NAD_gridshifts/",
   DEBUGOPT = list(NULL, "HILL", "RECEPTOR", "SOURCE", "ALL")[[1]],
   ...
 )
@@ -53,7 +53,8 @@ with named elements xmin, xmax, ymin, ymax, zone_min, and zone_max.}
 If not NULL, must be a numeric vector of longitude and latitude coordinates for the lower left and upper right corners of the domain
 with named elements xmin, xmax, ymin, and ymax.}
 
-\item{NADGRIDS}{NADGRIDS control option (default: NULL - AERMAP assumes the same directory as the AERMAP .inp file).
+\item{NADGRIDS}{NADGRIDS control option (default: "NAD_gridshifts/").
+If NULL, AEMAP assumes the same directory as the input file.
 If not NULL, must be a character string of the path to the folder containing NADCON grid shift files (.las and .los).}
 
 \item{DEBUGOPT}{DEBUGOPT control option (default: NULL - AERMAP does not print debug information).

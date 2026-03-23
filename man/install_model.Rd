@@ -30,5 +30,6 @@ install_model(
 The path to the model executable. The model will be installed in \verb{\{path\}/\{toupper(model)\}/}.
 }
 \description{
-Download and unzip AERMOD, AERMAP, or AERMET model executables
+Note: for AERMAP, the .los and .las files normally within the AERMAP directory are moved into "NAD_gridshifts/" after unxzipping.
+Ensure that the input file for AERMAP sets NADGRIDS in the control options to "NAD_gridshifts/" (the default if using \code{\link[=make_aermap_inp]{make_aermap_inp()}}).
 }

@@ -24,7 +24,8 @@
 #' @param DOMAINLL DOMAINLL control option (default: NULL - AERMAP assumes full domain of input data).
 #'   If not NULL, must be a numeric vector of longitude and latitude coordinates for the lower left and upper right corners of the domain
 #'   with named elements xmin, xmax, ymin, and ymax.
-#' @param NADGRIDS NADGRIDS control option (default: NULL - AERMAP assumes the same directory as the AERMAP .inp file).
+#' @param NADGRIDS NADGRIDS control option (default: "NAD_gridshifts/").
+#'   If NULL, AEMAP assumes the same directory as the input file.
 #'   If not NULL, must be a character string of the path to the folder containing NADCON grid shift files (.las and .los).
 #' @param DEBUGOPT DEBUGOPT control option (default: NULL - AERMAP does not print debug information).
 #'   If not NULL, must be a character value equal to "ALL" (equivalent to `c("HILL", "RECEPTOR", "SOURCE")`), or a vector of 1 or more of "HILL", "RECEPTOR", or "SOURCE".
@@ -65,7 +66,7 @@ aermap_control_options <- function(
     zone_max = NULL
   ),
   DOMAINLL = c(xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL),
-  NADGRIDS = list(NULL, "path/to/NADGrid")[[1]],
+  NADGRIDS = "NAD_gridshifts/",
   DEBUGOPT = list(NULL, "HILL", "RECEPTOR", "SOURCE", "ALL")[[1]],
   ...
 ) {
