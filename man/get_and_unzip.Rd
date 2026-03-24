@@ -8,6 +8,7 @@ get_and_unzip(
   zip_url,
   local_dir,
   remove_zips = TRUE,
+  timeout = 60 * 3,
   verbose = TRUE,
   prompt = rlang::is_interactive()
 )
@@ -18,6 +19,8 @@ get_and_unzip(
 \item{local_dir}{Local directory to download and unzip the file to}
 
 \item{remove_zips}{Whether to remove the downloaded zip file afterwards (default: TRUE)}
+
+\item{timeout}{Timeout for downloading the zip file in seconds (default: 3 minutes)}
 
 \item{verbose}{Whether to print a success message after downloading and unzipping (default: TRUE)}
 

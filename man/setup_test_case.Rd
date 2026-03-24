@@ -7,6 +7,7 @@
 setup_test_case(
   path,
   remove_zips = TRUE,
+  timeout = 60 * 3,
   verbose = TRUE,
   prompt = rlang::is_interactive(),
   open = rlang::is_interactive()
@@ -17,6 +18,8 @@ setup_test_case(
 
 \item{remove_zips}{Whether to remove the downloaded zip file afterwards (default: TRUE)}
 
+\item{timeout}{Timeout for downloading the zip file in seconds (default: 3 minutes)}
+
 \item{verbose}{Whether to print a success message after downloading and unzipping (default: TRUE)}
 
 \item{prompt}{Whether to prompt the user before downloading/unzipping (default: TRUE if R is interactive)}
@@ -25,8 +28,7 @@ setup_test_case(
 creation.}
 }
 \value{
-The path to the test case directory, with the zip file removed if
-remove_zips is TRUE.
+The path to the test case directory.
 }
 \description{
 This function sets up a test case for the aermodr package

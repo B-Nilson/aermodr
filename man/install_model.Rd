@@ -7,6 +7,7 @@
 install_model(
   path = ".",
   model = c("aermod", "aermap", "aermet")[1],
+  timeout = 60 * 3,
   is_x32 = FALSE,
   remove_zips = TRUE,
   verbose = TRUE,
@@ -17,6 +18,8 @@ install_model(
 \item{path}{Path to the model executable (optional). If provided and does not end in \code{exe_name}, it will be appended.}
 
 \item{model}{Name of the model (default: "aermod", must be one of "aermod", "aermap", or "aermet")}
+
+\item{timeout}{Timeout for downloading the zip file in seconds (default: 3 minutes)}
 
 \item{is_x32}{Whether to download the 32-bit version of the model (default: FALSE)}
 
