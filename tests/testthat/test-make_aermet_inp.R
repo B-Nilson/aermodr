@@ -78,7 +78,7 @@ test_that("test case works", {
       NO_MISSING = instruments$surface$name[instruments$surface$no_missing],
       ASOS1MIN = "asos1min.csv"
     ),
-    upperair_options = aermap_upperair_options(
+    upperair_options = aermet_upperair_options(
       EXTRACT = "upperair.csv",
       XDATES = date_range,
       QAOUT = "upperair.qa",

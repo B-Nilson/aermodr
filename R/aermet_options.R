@@ -95,7 +95,7 @@ aermet_surface_options <- function(
 #'   "DELMAND" (delete mandatory levels from sounding),
 #'   "CALMDIR" (set non-zero wind dir to 0 if wind speed is 0), or
 #'   "SUB_TTTD" (missing ambient and dew point temperatures are replaced by interpolated values)
-aermap_upperair_options <- function(
+aermet_upperair_options <- function(
   EXTRACT = list(NULL, "path/to/file")[[1]],
   XDATES = list(NULL, as.Date(c("2000-01-01", "2000-01-02")))[[1]],
   QAOUT = list(NULL, "path/to/file")[[1]],
@@ -141,7 +141,7 @@ aermap_upperair_options <- function(
 #'   Only DT01 (index = 1) is used in later processing stages of AERMET (default: NULL).
 #'   If not NULL, must be a data.frame with columns "lower" and "upper" of measurement heights (in meters) for each level of the profile (to a maximum of 3 levels).
 #' @param OBS_HOUR "OBS/HOUR" parameter - defines how many observations per hour for sub-hourly data (default: NULL).
-aermap_onsite_prog_options <- function(
+aermet_onsite_prog_options <- function(
   XDATES = list(NULL, as.Date(c("2000-01-01", "2000-01-02")))[[1]],
   QAOUT = list(NULL, "path/to/file")[[1]],
   AUDIT = list(NULL, c("var1", "var2"), "ALL")[[1]],
@@ -310,7 +310,7 @@ format_aermet_surface_options <- function(
 }
 
 format_aermet_upperair_options <- function(
-  options = aermap_upperair_options(),
+  options = aermet_upperair_options(),
   expand_paths = TRUE,
   n_spaces_start = 4,
   n_spaces_after_keys = NA
@@ -334,8 +334,8 @@ format_aermet_upperair_options <- function(
     )
 }
 
-format_aermap_onsite_and_prog_options <- function(
-  options = aermap_onsite_prog_options(),
+format_aermet_onsite_and_prog_options <- function(
+  options = aermet_onsite_prog_options(),
   n_spaces_start = 4,
   n_spaces_after_keys = NA
 ) {

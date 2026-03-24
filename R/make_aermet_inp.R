@@ -43,8 +43,8 @@ make_aermet_inp <- function(
   windspeed_zero_threshold = 0,
   job_options = aermet_job_options(),
   surface_options = aermet_surface_options(),
-  upperair_options = aermap_upperair_options(),
-  onsite_prog_options = aermap_onsite_prog_options(),
+  upperair_options = aermet_upperair_options(),
+  onsite_prog_options = aermet_onsite_prog_options(),
   metprep_options = aermet_metprep_options(),
   is_asos = FALSE,
   use_onsite = TRUE, # if FALSE, use prog
@@ -85,7 +85,7 @@ make_aermet_inp <- function(
     THRESHOLD = windspeed_zero_threshold
   ) |>
     c(onsite_prog_options) |>
-    format_aermap_onsite_and_prog_options()
+    format_aermet_onsite_and_prog_options()
 
   sectors <- site_characteristics |>
     dplyr::filter(!duplicated(sector_id)) |>
