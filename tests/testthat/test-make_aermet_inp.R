@@ -44,14 +44,15 @@ test_that("test case works", {
   wind_sector_step <- 180
   site_characteristics <- data.frame(
     frequency = "SEASONAL",
+    season = c("Spring", "Summer", "Fall", "Winter") |> rep(each = 2), # not required, but used for estimate_surface_characteristics()
     sector_start = seq(0, 359.9, by = wind_sector_step),
     sector_end = seq(wind_sector_step, 360, by = wind_sector_step),
     frequency_id = rep(1:4, each = 2),
-    sector_id = rep(1:2, time = 4),
-    albedo = c(0.8, 0.2, 0.7, 0.25, 0.6, 0.3, 0.75, 0.22),
-    bowen_ratio = c(0.12, 0.18, 0.13, 0.17, 0.14, 0.16, 0.13, 0.18),
-    surface_roughness = c(2, 0.8, 1.8, 0.9, 1.5, 1, 1.0, 0.85)
-  )
+    sector_id = rep(1:2, times = 4),
+    landuse_type = rep(c("Urban", "Grassland"), times = 4), # not required, but used for estimate_surface_characteristics()
+    moisture_condition = rep(c("dry", "wet"), times = 4) # not required, but used for estimate_surface_characteristics()
+  ) |>
+    estimate_surface_characteristics()
 
   temp <- file.path(tempdir(), "aermet.inp")
   on.exit(unlink(dirname(temp), recursive = TRUE))
