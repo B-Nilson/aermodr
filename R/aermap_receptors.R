@@ -81,11 +81,11 @@ build_inp_receptors <- function(receptors) {
   as.data.frame(receptors) |>
     dplyr::mutate(
       entries = dplyr::case_when(
-        type == "GRIDCART" ~ build_gridcart_receptors(receptors),
-        type == "GRIDPOLR" ~ build_gridpolr_receptors(receptors),
-        type == "DISCCART" ~ build_disccart_receptors(receptors),
-        type == "DISCPOLR" ~ build_discpolr_receptors(receptors),
-        type == "EVALCART" ~ build_evalcart_receptors(receptors)
+        .data$type == "GRIDCART" ~ build_gridcart_receptors(receptors),
+        .data$type == "GRIDPOLR" ~ build_gridpolr_receptors(receptors),
+        .data$type == "DISCCART" ~ build_disccart_receptors(receptors),
+        .data$type == "DISCPOLR" ~ build_discpolr_receptors(receptors),
+        .data$type == "EVALCART" ~ build_evalcart_receptors(receptors)
       )
     ) |>
     dplyr::pull("entries")
