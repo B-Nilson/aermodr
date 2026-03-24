@@ -93,14 +93,14 @@ aermap_control_options <- function(
     is.null(FLAGPOLE) ||
       (is.numeric(FLAGPOLE) && FLAGPOLE >= 0 && length(FLAGPOLE) == 1),
     is.null(DOMAINXY) ||
-      (is.numeric(DOMAINXY) &&
+      (is.numeric(unlist(DOMAINXY)) &&
         all(
           names(DOMAINXY) %in%
             c("xmin", "xmax", "ymin", "ymax", "zone_min", "zone_max")
         ) &&
         !anyNA(DOMAINXY)),
     is.null(DOMAINLL) ||
-      (is.numeric(DOMAINLL) &&
+      (is.numeric(unlist(DOMAINLL)) &&
         all(names(DOMAINLL) %in% c("xmin", "xmax", "ymin", "ymax")) &&
         !anyNA(DOMAINLL)),
     is.null(NADGRIDS) ||
