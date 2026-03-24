@@ -25,12 +25,18 @@ build_aermap_source_pathway <- function(
 
 build_inp_source_locations <- function(sources, source_lines = character(0)) {
   stopifnot(
-    all(names(sources) %in% c("id", "type", "x", "y", "elev")),
+    all(names(sources) %in% c("id", "type", "x", "y", "z")),
     nrow(as.data.frame(sources)) > 0,
     all(sources$type %in% c("POINT", "VOLUME", "AREA", "AREAPOLY", "AREACIRC")),
     !anyNA(sources)
   )
-  fmt_num <- \(x) formatC(x, format = "f", digits = 3, drop0trailing = TRUE)
+  fmt_num <- \(x) {
+    if (is.null(x)) {
+      ""
+    } else {
+      formatC(x, format = "f", digits = 3, drop0trailing = TRUE)
+    }
+  }
 
   source_lines <- c(
     source_lines,
@@ -40,7 +46,7 @@ build_inp_source_locations <- function(sources, source_lines = character(0)) {
         sources$type,
         fmt_num(sources$x),
         fmt_num(sources$y),
-        fmt_num(sources$elev)
+        fmt_num(sources$z)
       )
   )
   return(source_lines)

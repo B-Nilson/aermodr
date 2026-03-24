@@ -21,7 +21,7 @@ test_that("test case works", {
     type = "POINT",
     x = c(50, 150),
     y = c(50, 150),
-    elev = c(10, 15)
+    z = c(10, 15)
   )
 
   temp <- file.path(tempdir(), "aermap.inp")

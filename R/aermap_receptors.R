@@ -14,9 +14,10 @@ build_aermap_receptor_pathway <- function(
     file_lines <- c("   INCLUDED  %s" |> sprintf(files_fmtted))
   }
 
+  need_elevunit <- "z" %in% names(receptors) & receptor_elev_unit != "METERS"
   receptor_lines <- c(
     "RE STARTING",
-    if ("elev" %in% names(receptors)) elevunit_line,
+    if (need_elevunit) elevunit_line,
     receptors |> build_inp_receptors(),
     file_lines,
     "RE FINISHED",
@@ -118,7 +119,7 @@ build_gridcart_receptors <- function(receptors) {
               "XPNTS %s\n               YPNTS %s" |>
               sprintf(entry$xpoints, entry$ypoints),
             entry$subtype == "ELEV" ~
-              "ELEV %s %s" |> sprintf(seq_along(entry$elev), entry$elev),
+              "ELEV %s %s" |> sprintf(seq_along(entry$z), entry$z),
             entry$subtype == "FLAG" ~
               "FLAG %s %s" |> sprintf(seq_along(entry$flag), entry$flag)
           ) |>
@@ -158,7 +159,7 @@ build_gridpolr_receptors <- function(receptors) {
               "GDIR %s %s %s" |>
               sprintf(entrt$dircount, entry$dirmin, entry$dirdelta),
             entry$subtype == "ELEV" ~
-              "ELEV %s %s" |> sprintf(seq_along(entry$elev), entry$elev),
+              "ELEV %s %s" |> sprintf(seq_along(entry$z), entry$z),
             entry$subtype == "FLAG" ~
               "FLAG %s %s" |> sprintf(seq_along(entry$flag), entry$flag)
           ) |>
@@ -188,8 +189,8 @@ build_disccart_receptors <- function(receptors) {
         sprintf(
           .data$x,
           .data$y,
-          .data$elev |> dplyr::replace_values(NA ~ ""),
-          ifelse(!is.na(.data$elev), .data$flag, "") |>
+          .data$z |> as.character() |> dplyr::replace_values(NA ~ ""),
+          ifelse(!is.na(.data$z), .data$flag, "") |>
             dplyr::replace_values(NA ~ "")
         )
     ) |>
@@ -210,8 +211,8 @@ build_discpolr_receptors <- function(receptors) {
           .data$srcid,
           .data$dist,
           .data$dir,
-          .data$elev |> dplyr::replace_values(NA ~ ""),
-          ifelse(!is.na(.data$elev), .data$flag, "") |>
+          .data$z |> dplyr::replace_values(NA ~ ""),
+          ifelse(!is.na(.data$z), .data$flag, "") |>
             dplyr::replace_values(NA ~ "")
         )
     ) |>
@@ -231,7 +232,7 @@ build_evalcart_receptors <- function(receptors) {
         sprintf(
           .data$x,
           .data$y,
-          .data$elev,
+          .data$z,
           .data$flag,
           .data$arcid,
           .data$name |> dplyr::replace_values(NA ~ "")
