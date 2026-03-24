@@ -204,7 +204,7 @@ format_aermap_output_options <- function(
   names(options) <- toupper(names(options))
   path_opts <- c("DEBUGHIL", "DEBUGREC", "DEBUGSRC")
   if (any(path_opts %in% names(options))) {
-    options[path_options] <- options[path_options] |>
+    options[path_opts] <- options[path_opts] |>
       lapply(format_path_options, expand_paths = expand_paths)
   }
 
