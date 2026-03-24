@@ -172,7 +172,6 @@ aermet_onsite_prog_options <- function(
     NO_MISSING = list(NULL, c("var1", "var2"), "ALL")[[1]],
     OSHEIGHTS = sort(OSHEIGHTS),
     DELTA_TEMP = DELTA_TEMP,
-    THRESHOLD = THRESHOLD,
     `OBS/HOUR` = OBS_HOUR,
     ...
   ) |>
