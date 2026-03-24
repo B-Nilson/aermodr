@@ -57,7 +57,7 @@ create_project <- function(
       prompt = prompt,
       remove_zips = remove_zips
     )
-    path |> 
+    path |>
       file.path(toupper(model), c("inputs", "outputs")) |>
       sapply(dir.create, showWarnings = FALSE)
   }

@@ -193,17 +193,17 @@ aermet_onsite_prog_options <- function(
 #'  If not NULL, must be a list with one or more entries named
 #'  "WIND_DIR", "REFLEVEL", "ASOS_ADJ", "UASELECT", "STABLEBL", "CCVR", "TEMP", and/or "COARE",
 #'  each of which must be a vector with one or more named logical parameters (see details).
-#' @param UAWINDOW Window for selecting upper air sounding data as a list with elements "start" and "end" 
-#'  with the hour difference relative to the reference sounding times (default: NULL - equivelant to `list(start = -1, end = 1)`). 
+#' @param UAWINDOW Window for selecting upper air sounding data as a list with elements "start" and "end"
+#'  with the hour difference relative to the reference sounding times (default: NULL - equivelant to `list(start = -1, end = 1)`).
 #' @param AERSURF,AERSURF2 Primary/secondary surface characteristic file paths (default: NULL).
 #' @param SSTDEPTH Sea surface temperature and measurement depth (default: NULL).
-#'  If not null, must be a list with elements "SST" and "DEPTH" specifying 
+#'  If not null, must be a list with elements "SST" and "DEPTH" specifying
 #'  the sea surface temperature (in degrees C) and depth of measurement (in metres).
-#' @param ZI_GUST,ZI_MIN  override the default mixing height to use for gust calculations and 
+#' @param ZI_GUST,ZI_MIN  override the default mixing height to use for gust calculations and
 #'  the default minimum mixing height used in COARE. Units are metres. (defaults: NULL - equivelant to 600 and 25)
 #' @param MIN_MOL minimum absolute value of Monin-Obukov length allowed. Units are metres. (default: NULL - equivelant to 5).
 #' @param DEF_VPTG default value of potential temperature gradient output by COARE. Units are degrees C per metre. (default: NULL - equivelant to 0.01).
-#' 
+#'
 #' @details
 #'   METHOD parameters: # TODO:
 aermet_metprep_options <- function(

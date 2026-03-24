@@ -1,12 +1,12 @@
 #' Create an AERMET input file
-#' 
+#'
 #' @param inp_path Path to input file (default: "aermet.inp").
-#' @param surface_station,upperair_station,onsite_prog_station 
-#'   Station location details - must be a data.frame or list with names 
+#' @param surface_station,upperair_station,onsite_prog_station
+#'   Station location details - must be a data.frame or list with names
 #'   "site_id", "lat", "lng", and optionally "tz_offset" and/or "elev".
 #'   `onsite_prog_station` is only required if using an onsite or prognostic station.
-#' @param instrument_heights Heights of surface instruments (in meters) with names matching the instrument variable name (default: NULL). 
-#' @param site_characteristics Data.frame of site characteristics with columns 
+#' @param instrument_heights Heights of surface instruments (in meters) with names matching the instrument variable name (default: NULL).
+#' @param site_characteristics Data.frame of site characteristics with columns
 #'   "frequency", "years", "sector_start", "sector_end", "frequency_id", "sector_id", "albedo", "bowen_ratio", and "surface_roughness".
 #' @param output_path,profile_path
 #'   Paths to output surface and profile files passed to the OUTPUT and PROFILE options.
@@ -66,7 +66,7 @@ make_aermet_inp <- function(
   upperair_data_format = c("EXTRACT", "IGRA", "FSL", "6201FB", "6201VB")[1],
   onsite_prog_path = basename(inp_path) |>
     sub(pattern = "\\..*$", replacement = "_onsite_prog.txt"),
-  onsite_formats = NULL, 
+  onsite_formats = NULL,
   windspeed_zero_threshold = 0,
   job_options = aermet_job_options(),
   surface_options = aermet_surface_options(),
@@ -152,7 +152,8 @@ make_aermet_inp <- function(
     ),
     "**  " = "       --|t|s|albd|bowr|srfr|--",
     SITE_CHAR = with(
-      site_characteristics |> dplyr::arrange(.data$frequency_id, .data$sector_id),
+      site_characteristics |>
+        dplyr::arrange(.data$frequency_id, .data$sector_id),
       paste(
         frequency_id,
         sector_id,

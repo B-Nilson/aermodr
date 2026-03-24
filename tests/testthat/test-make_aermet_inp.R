@@ -61,7 +61,7 @@ test_that("test case works", {
     surface_station = surface_station,
     upperair_station = upperair_station,
     onsite_prog_station = onsite_prog_station,
-    instrument_heights = instruments$surface$height |> 
+    instrument_heights = instruments$surface$height |>
       stats::setNames(instruments$surface$name),
     site_characteristics = site_characteristics,
     onsite_formats = list("TEMP" = "FREE", "RH" = "FREE"),

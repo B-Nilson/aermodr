@@ -29,7 +29,11 @@ estimate_surface_characteristics <- function(
       dplyr::left_join(
         all_characteristics |>
           dplyr::filter(is.na(.data$moisture_condition)) |>
-          dplyr::select(dplyr::all_of(join_by[-3]), "characteristic", "value") |>
+          dplyr::select(
+            dplyr::all_of(join_by[-3]),
+            "characteristic",
+            "value"
+          ) |>
           tidyr::pivot_wider(
             names_from = "characteristic",
             values_from = "value"

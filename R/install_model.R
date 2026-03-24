@@ -2,7 +2,7 @@
 #'
 #' Note: for AERMAP, the .los and .las files normally within the AERMAP directory are moved into "NAD_gridshifts/" after unxzipping.
 #' Ensure that the input file for AERMAP sets NADGRIDS in the control options to "NAD_gridshifts/" (the default if using [make_aermap_inp()]).
-#' 
+#'
 #' @inheritParams check_installed
 #' @inheritParams get_and_unzip
 #' @param is_x32 Whether to download the 32-bit version of the model (default: FALSE)
@@ -56,11 +56,12 @@ install_model <- function(
       prompt = prompt,
       timeout = timeout
     )
-  
+
   if (model == "aermap") {
     gridshifts_dir <- file.path(model_dir, "NAD_gridshifts")
     dir.create(gridshifts_dir, showWarnings = FALSE)
-    is_gridshift <- endsWith(local_files, ".las") | endsWith(local_files, ".los")
+    is_gridshift <- endsWith(local_files, ".las") |
+      endsWith(local_files, ".los")
     gridshift_files <- local_files[is_gridshift]
     local_files <- local_files[!is_gridshift]
     gridshift_files |>
