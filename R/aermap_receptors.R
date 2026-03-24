@@ -88,20 +88,20 @@ build_inp_receptors <- function(receptors) {
         type == "EVALCART" ~ build_evalcart_receptors(receptors)
       )
     ) |>
-    dplyr::pull(entries)
+    dplyr::pull("entries")
 }
 
 build_gridcart_receptors <- function(receptors) {
   gridcarts <- receptors |>
-    dplyr::filter(toupper(type) == "GRIDCART")
+    dplyr::filter(toupper(.data$type) == "GRIDCART")
   if (nrow(gridcarts) == 0) {
     return(NA_character_)
   }
 
   gridcarts <- gridcarts |>
-    tidyr::nest(.by = id) |>
+    tidyr::nest(.by = "id") |>
     dplyr::mutate(
-      entries = data |>
+      entries = .data$data |>
         sapply(\(entry) {
           dplyr::case_when(
             entry$subtype == "XYINC" ~
@@ -137,15 +137,15 @@ build_gridcart_receptors <- function(receptors) {
 
 build_gridpolr_receptors <- function(receptors) {
   gridpolrs <- receptors |>
-    dplyr::filter(toupper(type) == "GRIDPOLR")
+    dplyr::filter(toupper(.data$type) == "GRIDPOLR")
   if (nrow(gridpolrs) == 0) {
     return(NA_character_)
   }
 
   gridpolrs <- gridpolrs |>
-    tidyr::nest(.by = id) |>
+    tidyr::nest(.by = "id") |>
     dplyr::mutate(
-      entries = data |>
+      entries = .data$data |>
         sapply(\(entry) {
           dplyr::case_when(
             entry$subtype == "ORIG" ~
@@ -177,7 +177,7 @@ build_gridpolr_receptors <- function(receptors) {
 
 build_disccart_receptors <- function(receptors) {
   disccarts <- receptors |>
-    dplyr::filter(toupper(type) == "DISCCART")
+    dplyr::filter(toupper(.data$type) == "DISCCART")
   if (nrow(disccarts) == 0) {
     return(NA_character_)
   }
@@ -193,12 +193,12 @@ build_disccart_receptors <- function(receptors) {
             dplyr::replace_values(NA ~ "")
         )
     ) |>
-    dplyr::pull(entries)
+    dplyr::pull("entries")
 }
 
 build_discpolr_receptors <- function(receptors) {
   discpolrs <- receptors |>
-    dplyr::filter(toupper(type) == "DISCPOLR")
+    dplyr::filter(toupper(.data$type) == "DISCPOLR")
   if (nrow(discpolrs) == 0) {
     return(NA_character_)
   }
@@ -215,12 +215,12 @@ build_discpolr_receptors <- function(receptors) {
             dplyr::replace_values(NA ~ "")
         )
     ) |>
-    dplyr::pull(entries)
+    dplyr::pull("entries")
 }
 
 build_evalcart_receptors <- function(receptors) {
   evalcarts <- receptors |>
-    dplyr::filter(toupper(type) == "EVALCART")
+    dplyr::filter(toupper(.data$type) == "EVALCART")
   if (nrow(evalcarts) == 0) {
     return(NA_character_)
   }
@@ -237,5 +237,5 @@ build_evalcart_receptors <- function(receptors) {
           .data$name |> dplyr::replace_values(NA ~ "")
         )
     ) |>
-    dplyr::pull(entries)
+    dplyr::pull("entries")
 }

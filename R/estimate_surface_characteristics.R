@@ -14,45 +14,43 @@ estimate_surface_characteristics <- function(
   )[1],
   characteristics = c("all", "albedo", "bowen_ratio", "surface_roughness")[1],
   seasons = c("all", "Spring", "Summer", "Fall", "Winter")[1],
-  moisture_conditions = c("dry", "average", "wet")[1]
+  moisture_conditions = c("dry", "average", "wet")[1],
+  join_by = c("landuse_type", "season", "moisture_condition")
 ) {
   all_characteristics <- get_surface_characteristic_estimates()
 
   if (!is.null(data)) {
     data |>
-      dplyr::left_join(
-        all_characteristics,
-        by = c("landuse_type", "season", "moisture_condition")
-      ) |>
+      dplyr::left_join(all_characteristics, by = join_by) |>
       tidyr::pivot_wider(
-        names_from = characteristic,
-        values_from = value
+        names_from = "characteristic",
+        values_from = "value"
       ) |>
       dplyr::left_join(
         all_characteristics |>
-          dplyr::filter(is.na(moisture_condition)) |>
-          dplyr::select(landuse_type, season, characteristic, value) |>
+          dplyr::filter(is.na(.data$moisture_condition)) |>
+          dplyr::select(dplyr::all_of(join_by[-3]), "characteristic", "value") |>
           tidyr::pivot_wider(
-            names_from = characteristic,
-            values_from = value
+            names_from = "characteristic",
+            values_from = "value"
           ),
-        by = c("landuse_type", "season")
+        by = join_by[-3]
       )
   } else {
     all_characteristics |>
       dplyr::filter(
-        season %in% seasons | seasons == "all",
-        landuse_type %in% landuse_types | landuse_types == "all",
-        moisture_condition %in%
+        .data$season %in% seasons | seasons == "all",
+        .data$landuse_type %in% landuse_types | landuse_types == "all",
+        .data$moisture_condition %in%
           moisture_conditions |
-          is.na(moisture_condition),
-        characteristic %in% characteristics | characteristics == "all"
+          is.na(.data$moisture_condition),
+        .data$characteristic %in% characteristics | characteristics == "all"
       ) |>
-      dplyr::select(-moisture_condition) |>
+      dplyr::select(-"moisture_condition") |>
       tidyr::pivot_wider(
-        id_cols = c(landuse_type, season),
-        names_from = characteristic,
-        values_from = value
+        id_cols = c("landuse_type", "season"),
+        names_from = "characteristic",
+        values_from = "value"
       )
   }
 }
@@ -121,7 +119,7 @@ get_surface_characteristic_estimates <- function() {
   ) |>
     lapply(
       tidyr::pivot_longer,
-      cols = -c(landuse_type, dplyr::any_of("moisture_condition")),
+      cols = -c("landuse_type", dplyr::any_of("moisture_condition")),
       names_to = "season"
     ) |>
     dplyr::bind_rows(.id = "characteristic")

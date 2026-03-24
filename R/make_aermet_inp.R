@@ -28,6 +28,7 @@
 #' @param expand_paths Whether to expand relative paths to absolute paths (default: TRUE).
 #' @param verbose Whether to print extra messages (default: TRUE).
 #' @export
+#' @importFrom rlang .data
 make_aermet_inp <- function(
   inp_path = "aermet.inp",
   surface_station,
@@ -114,15 +115,15 @@ make_aermet_inp <- function(
     format_aermet_onsite_and_prog_options()
 
   sectors <- site_characteristics |>
-    dplyr::filter(!duplicated(sector_id)) |>
-    dplyr::select(start = sector_start, end = sector_end)
+    dplyr::filter(!duplicated(.data$sector_id)) |>
+    dplyr::select(start = "sector_start", end = "sector_end")
 
   if (!"years" %in% names(site_characteristics)) {
     site_characteristics$years <- ""
   }
   landuse_change_frequency <- site_characteristics |>
-    dplyr::count(frequency, frequency_id, years) |>
-    dplyr::distinct(frequency, n, years)
+    dplyr::count(.data$frequency, .data$frequency_id, .data$years) |>
+    dplyr::distinct(.data$frequency, .data$n, .data$years)
   freq_sector_range <- list(ANNUAL = "1", SEASONAL = "1-4", MONTHLY = "1-12")[[
     landuse_change_frequency$frequency[1]
   ]]
@@ -151,7 +152,7 @@ make_aermet_inp <- function(
     ),
     "**  " = "       --|t|s|albd|bowr|srfr|--",
     SITE_CHAR = with(
-      site_characteristics |> dplyr::arrange(frequency_id, sector_id),
+      site_characteristics |> dplyr::arrange(.data$frequency_id, .data$sector_id),
       paste(
         frequency_id,
         sector_id,
