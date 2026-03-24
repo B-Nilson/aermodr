@@ -1,12 +1,39 @@
+#' Create an AERMET input file
+#' 
+#' @param inp_path Path to input file (default: "aermet.inp").
+#' @param surface_station,upperair_station,onsite_prog_station 
+#'   Station location details - must be a data.frame or list with names 
+#'   "site_id", "lat", "lng", and optionally "tz_offset" and/or "elev".
+#'   `onsite_prog_station` is only required if using an onsite or prognostic station.
+#' @param instrument_heights Heights of surface instruments (in meters) with names matching the instrument variable name (default: NULL). 
+#' @param site_characteristics Data.frame of site characteristics with columns 
+#'   "frequency", "years", "sector_start", "sector_end", "frequency_id", "sector_id", "albedo", "bowen_ratio", and "surface_roughness".
+#' @param output_path,profile_path
+#'   Paths to output surface and profile files passed to the OUTPUT and PROFILE options.
+#' @param surface_path,upperair_path,onsite_prog_path
+#'   Paths to archive files passed to each DATA option.
+#' @param surface_data_format,upperair_data_format
+#'   Formats of archive files passed to each DATA option.
+#'   For surface, must be one of "EXTRACT", "CD144", "SCRAM", "SAMSON", "HUSWO", or "ISHD".
+#'   For upperair, must be one of "EXTRACT", "IGRA", "FSL", "6201FB", "6201VB".
+#' @param messages_path Path to messages file (default: "aermet_messages.txt").
+#' @param onsite_formats List of onsite data formats (default: NULL). See  Table B-3 and B-4 of the AERMET user guide.
+#' @param windspeed_zero_threshold Threshold for the minimum wind speed required to detect air flow (default: 0 m/s).
+#' @param job_options,surface_options,upperair_options,onsite_prog_options,metprep_options
+#'   Additional optional settings passed to each control pathway in the input file.
+#'   See [aermet_job_options()], [aermet_surface_options()], [aermet_upperair_options()], [aermet_onsite_prog_options()], and [aermet_metprep_options()].
+#' @param is_asos Whether or not the surface station is an ASOS station (default: FALSE).
+#' @param use_onsite Whether to use an onsite or prognostic pathway for the onsite_prog option (default: TRUE).
+#' @param onsite_prog_over_land Whether or not the onsite/prog station is over land (instad of over water) (default: TRUE).
+#' @param expand_paths Whether to expand relative paths to absolute paths (default: TRUE).
+#' @param verbose Whether to print extra messages (default: TRUE).
+#' @export
 make_aermet_inp <- function(
   inp_path = "aermet.inp",
   surface_station,
-  upperair_station, # TODO: required?
-  onsite_prog_station, # TODO: required? when not allowed?
-  wind_sectors = data.frame(start = NULL, end = NULL), # SECTOR(2)
-  landuse_change_frequency = data.frame(
-    n_sectors = list(NULL, 1:12)[[1]]
-  ), # FREQ_SECT(2)
+  instrument_heights,
+  upperair_station,
+  onsite_prog_station = NULL, # TODO: required? when not allowed?
   site_characteristics = data.frame(
     frequency = list(NULL, c("ANNUAL", "SEASONAL", "MONTHLY"))[[1]],
     years = list(NULL, c("2020 2021 2022", "2023", "2024 2025"))[[1]],
@@ -22,10 +49,9 @@ make_aermet_inp <- function(
   output_path = basename(inp_path) |>
     sub(pattern = "\\..*$", replacement = ".sfc"),
   profile_path = basename(inp_path) |>
-    sub(pattern = "\\..*$", replacement = ".pfl"),
-  instrument_heights,
+    sub(pattern = "\\..*$", replacement = "_QA.pfl"),
   surface_path = basename(inp_path) |>
-    sub(pattern = "\\..*$", replacement = "_surface.txt"),
+    sub(pattern = "\\..*$", replacement = ".iqa"),
   surface_data_format = c(
     "EXTRACT",
     "CD144",
@@ -39,7 +65,7 @@ make_aermet_inp <- function(
   upperair_data_format = c("EXTRACT", "IGRA", "FSL", "6201FB", "6201VB")[1],
   onsite_prog_path = basename(inp_path) |>
     sub(pattern = "\\..*$", replacement = "_onsite_prog.txt"),
-  onsite_formats = NULL, # See Table B-3 and B-4
+  onsite_formats = NULL, 
   windspeed_zero_threshold = 0,
   job_options = aermet_job_options(),
   surface_options = aermet_surface_options(),
