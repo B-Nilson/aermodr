@@ -59,7 +59,7 @@ create_project <- function(
     )
     path |> 
       file.path(toupper(model), c("inputs", "outputs")) |>
-      dir.create()
+      sapply(dir.create, showWarnings = FALSE)
   }
 
   # Open project if desired
