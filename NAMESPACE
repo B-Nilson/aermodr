@@ -2,6 +2,8 @@
 
 export(aermap_control_options)
 export(aermap_output_options)
+export(aermet_job_options)
+export(aermet_surface_options)
 export(check_installed)
 export(create_project)
 export(install_model)

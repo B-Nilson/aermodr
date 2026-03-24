@@ -40,6 +40,7 @@ make_aermet_inp <- function(
   onsite_prog_path = basename(inp_path) |>
     sub(pattern = "\\..*$", replacement = "_onsite_prog.txt"),
   onsite_formats = NULL, # See Table B-3 and B-4
+  windspeed_zero_threshold = 0,
   job_options = aermet_job_options(),
   surface_options = aermet_surface_options(),
   upperair_options = aermap_upperair_options(),
@@ -80,7 +81,8 @@ make_aermet_inp <- function(
     LOCATION = onsite_prog_station |> format_location_option(),
     # TODO: df input instead so names flexible?
     READ = if (use_onsite) paste(onsite_ids, names(onsite_formats)),
-    FORMAT = if (use_onsite) paste(onsite_ids, onsite_formats)
+    FORMAT = if (use_onsite) paste(onsite_ids, onsite_formats),
+    THRESHOLD = windspeed_zero_threshold
   ) |>
     c(onsite_prog_options) |>
     format_aermap_onsite_and_prog_options()
