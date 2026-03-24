@@ -178,11 +178,12 @@ format_aermap_control_options <- function(
   n_spaces_start = 3,
   n_spaces_after_keys = NA
 ) {
-  domain_opts <- c(xy = "DOMAINXY", ll = "DOMAINLL")
+  domain_opts <- list(xy = "DOMAINXY", ll = "DOMAINLL")
   if (any(domain_opts %in% names(options))) {
-    options[domain_opts] <- names(options[domain_opts]) |>
+    domain_opts <- domain_opts[domain_opts %in% names(options)]
+    options[unlist(domain_opts)] <- names(options[unlist(domain_opts)]) |>
       lapply(\(type) {
-        options[[domain_opts[[type]]]] |> format_domain_option(type = type)
+        options[[type]] |> format_domain_option(type = names(domain_opts[which(domain_opts == type)]))
       })
   }
   if ("DEBUGOPT" %in% names(options)) {
