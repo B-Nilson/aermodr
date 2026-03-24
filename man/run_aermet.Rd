@@ -16,7 +16,7 @@ run_aermet(
 \arguments{
 \item{path}{Path to directory with the model executable.}
 
-\item{exe_name}{Name of the model executable (default: "{model}.exe")}
+\item{exe_name}{Name of the model executable (default: "\code{model}.exe")}
 
 \item{run_names}{Names of the runs (default: c("aermet1", "aermet2")) - used for default names of the input and output files for each stage.}
 

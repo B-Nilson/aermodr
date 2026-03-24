@@ -2,11 +2,11 @@
 #'
 #' @param path Path to directory with the model executable.
 #' @param model Name of model to run (default: "aermap", must be one of "aermod", "aermap", or "aermet")
-#' @param exe_name Name of the model executable (default: "{model}.exe")
-#' @param run_name Name of the run (default: {model}) - used for default names of the input and output files
-#' @param inp_name Name of the input file (default: "{run_name}.inp")
-#' @param out_name Name of the output file (default: "{run_name}.out")
-#' @param log_name Name of the log file (default: "{run_name}.log")
+#' @param exe_name Name of the model executable (default: "`model`.exe")
+#' @param run_name Name of the run (default: `model`) - used for default names of the input and output files
+#' @param inp_name Name of the input file (default: "`run_name`.inp")
+#' @param out_name Name of the output file (default: "`run_name`.out")
+#' @param log_name Name of the log file (default: "`run_name`.log")
 #' @param verbose Whether to print the output of the model (default: TRUE)
 #' @return A character value of the model log (invisible), or an error if the model log is not found (i.e. the model failed to run)
 #' @export

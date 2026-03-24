@@ -17,15 +17,15 @@ run_aermap(
 \arguments{
 \item{path}{Path to directory with the model executable.}
 
-\item{exe_name}{Name of the model executable (default: "{model}.exe")}
+\item{exe_name}{Name of the model executable (default: "\code{model}.exe")}
 
-\item{run_name}{Name of the run (default: {model}) - used for default names of the input and output files}
+\item{run_name}{Name of the run (default: \code{model}) - used for default names of the input and output files}
 
-\item{inp_name}{Name of the input file (default: "{run_name}.inp")}
+\item{inp_name}{Name of the input file (default: "\code{run_name}.inp")}
 
-\item{out_name}{Name of the output file (default: "{run_name}.out")}
+\item{out_name}{Name of the output file (default: "\code{run_name}.out")}
 
-\item{log_name}{Name of the log file (default: "{run_name}.log")}
+\item{log_name}{Name of the log file (default: "\code{run_name}.log")}
 
 \item{verbose}{Whether to print the output of the model (default: TRUE)}
 }

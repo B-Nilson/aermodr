@@ -2,7 +2,7 @@
 #'
 #' @param path Path to the model executable (optional). If provided and does not end in `exe_name`, it will be appended.
 #' @param model Name of the model (default: "aermod", must be one of "aermod", "aermap", or "aermet")
-#' @param exe_name Name of the model executable (default: "{model}.exe" on Windows, "{model}" otherwise)
+#' @param exe_name Name of the model executable (default: "`model`.exe" on Windows, "`model`" otherwise)
 #' @param verbose Whether to print a success message if the model is found (default: TRUE)
 #' @return A list containing the found path, the source of the path (either "user", "PATH", or "common_path"), and whether the path was found.
 #' @export

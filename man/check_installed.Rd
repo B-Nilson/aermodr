@@ -16,7 +16,7 @@ check_installed(
 
 \item{model}{Name of the model (default: "aermod", must be one of "aermod", "aermap", or "aermet")}
 
-\item{exe_name}{Name of the model executable (default: "{model}.exe" on Windows, "{model}" otherwise)}
+\item{exe_name}{Name of the model executable (default: "\code{model}.exe" on Windows, "\code{model}" otherwise)}
 
 \item{verbose}{Whether to print a success message if the model is found (default: TRUE)}
 }
